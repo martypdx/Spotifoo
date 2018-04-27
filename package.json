@@ -1,0 +1,46 @@
+{
+  "name": "spotifoo",
+  "version": "1.0.0",
+  "description": "Music/playlist API",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test:mocha": "mocha  --recursive",
+    "test": "npm run test:mocha",
+    "test:unit": "mocha test/unit",
+    "test:e2e": "mocha test/e2e",
+    "test:watch": "nodemon --exec npm run test:mocha",
+    "test:e2e:watch": "nodemon --exec 'npm run test:e2e'",
+    "test:unit:watch": "nodemon --exec npm run test:unit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MAGIC8BALLs/Spotifoo.git"
+  },
+  "author": "Steele Walston, Ryan Manro, Jeff Lonergan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MAGIC8BALLs/Spotifoo/issues"
+  },
+  "homepage": "https://github.com/MAGIC8BALLs/Spotifoo#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "eslint": "^4.19.1",
+    "mocha": "^5.1.1",
+    "nodemon": "^1.17.3"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "mongoose": "^5.0.16",
+    "morgan": "^1.9.0"
+  }
+}
