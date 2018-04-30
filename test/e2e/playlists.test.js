@@ -80,5 +80,24 @@ describe('Playlist API', () => {
             });    
     });
 
+    it('updates a playlists playcount an d the songs playcount as well', () => {
+        playlist1.playlistCount = playlist1.playlistCount + 1;
+        song1.playcount = song1.playcount + 1;
+        return request.put(`/songs/${song1._id}`)
+            .send(song1)
+            .then(() => {
+                return request.put(`/playlists/${playlist1._id}`)
+                    .send(playlist1)
+                    .then(checkOk)
+                    .then(({ body }) => {
+                        assert.deepEqual(body, playlist1);
+                        return request.get(`/playlists/${playlist1._id}`);
+                    })
+                    .then(({ body }) => {
+                        assert.equal(body.playlistCount, playlist1.playlistCount);
+                    });
+            });
+    });
+
 
 });
