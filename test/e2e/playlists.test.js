@@ -1,0 +1,67 @@
+const { assert } = require('chai');
+const request = require('./request');
+const { dropCollection, createToken } = require('./db');
+const { Types } = require('mongoose');
+
+describe('Playlist API', () => {
+
+    before(() => dropCollection('songs'));
+    before(() => dropCollection('playlists'));
+
+    const checkOk = res => {
+        if(!res.ok) throw res.error;
+        return res;
+    };
+
+    let song1 = {
+        title: 'song1',
+        // artist: {},
+        length: '3:03',
+        // album: {},
+        playcount: 3
+    };
+
+    let playlist1 = {
+        name: 'playlist1',
+        songs: [],
+        // user: {},
+        playlistCount: 3
+    };
+
+    before(() => {
+        return request.post('/songs')
+            .send(song1)
+            .then(({ body }) => {
+                song1 = body;
+            });
+    });
+
+    it('saves a playlist', () => {
+        playlist1.songs.push(song1._id);
+
+        return request.post('/playlists')
+            .send(playlist1)
+            .then(checkOk)
+            .then(({ body }) => {
+                const { _id, __v } = body;
+                assert.ok(_id);
+                assert.equal(__v, 0);
+                assert.deepEqual(body, {
+                    ...playlist1,
+                    _id, __v 
+                });
+                playlist1 = body;
+            });
+    });
+
+    const getFields = ({ _id, name, playlistCount }) => ({ _id, name, playlistCount });
+
+    it('gets all songs', () => {
+        return request.get('/playlists')
+            .then(({ body }) => {
+                assert.deepEqual(body, [playlist1].map(getFields));
+            });
+    });
+
+
+});
