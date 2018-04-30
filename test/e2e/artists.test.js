@@ -27,6 +27,7 @@ describe.only('Artist E2E Test', () =>{
 
     // let artist2 = {
     //     name:'Grimes',
+    //     albums:[],
     //     genre: 'Pop'
     // };
 
@@ -40,16 +41,23 @@ describe.only('Artist E2E Test', () =>{
             .send(artist1)
             .then(checkOk)
             .then(({ body }) => {
-                const { _id, __v, genre, albums } = body;
+                const { _id, __v } = body;
                 assert.ok(_id);
                 assert.equal(__v, 0);
-                assert.ok(genre);
                 assert.deepEqual(body, {
                     ...artist1,
-                    _id, __v, genre, albums
+                    _id, __v
                 });
                 artist1 = body;
             });
+    });
+
+    it('gets artist by id', () => {
+        return request.get(`/artists/${artist1._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, artist1);
+            });
+    
     });
 
 
