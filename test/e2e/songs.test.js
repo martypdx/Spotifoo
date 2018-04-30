@@ -66,4 +66,22 @@ describe('songs api', () => {
                 assert.equal(body.playcount, song1.playcount);
             });
     });
+
+    it('deletes a song', () => {
+        return request.delete(`/songs/${song1._id}`)
+            .then(() => {
+                return request.get(`/songs/${song1._id}`);
+            })
+            .then(res => {
+                assert.equal(res.status, 404);
+            });
+    });
+
+    it('returns 404 with non-existent id', () => {
+        return request.get(`/songs/${song1._id}`)
+            .then(response => {
+                assert.equal(response.status, 404);
+                assert.match(response.body.error, new RegExp(song1._id));
+            });
+    });
 });
