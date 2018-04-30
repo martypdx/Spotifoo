@@ -36,7 +36,7 @@ describe('songs api', () => {
             });
     });
 
-    const getFields = ({ _id, title }) => ({ _id, title });
+    const getFields = ({ _id, title, playcount }) => ({ _id, title, playcount });
 
     it('gets all songs', () => {
         return request.get('/songs')
@@ -51,5 +51,19 @@ describe('songs api', () => {
                 assert.deepEqual(body, song1);
             });
             
+    });
+
+    it('updates a songs playcount', () => {
+        song1.playcount = song1.playcount + 1;
+        return request.put(`/songs/${song1._id}`)
+            .send(song1)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, song1);
+                return request.get(`/songs/${song1._id}`);
+            })
+            .then(({ body }) => {
+                assert.equal(body.playcount, song1.playcount);
+            });
     });
 });
