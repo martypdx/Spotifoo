@@ -25,16 +25,18 @@ describe.only('Artist E2E Test', () =>{
         genre: 'Alternative'
     };
 
-    // let artist2 = {
-    //     name:'Grimes',
-    //     albums:[],
-    //     genre: 'Pop'
-    // };
+    let artist2 = {
+        name:'Grimes',
+        albums:[],
+        genre: 'Pop'
+    };
 
     const checkOk = res => {
         if(!res.ok) throw res.error;
         return res;
     };
+
+    const getFields = ({ _id, __v, name }) => ({ _id, __v, name });
 
     it('posts an artist to the db', () => {
         return request.post('/artists')
@@ -58,6 +60,20 @@ describe.only('Artist E2E Test', () =>{
                 assert.deepEqual(body, artist1);
             });
     
+    });
+
+    it('get all artists', () => {
+        return request.post('/artists')
+            .send(artist2)
+            .then(checkOk)
+            .then(({ body }) => {
+                artist2 = body;
+                return request.get('/artists');
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, [artist1, artist2].map(getFields));
+            });
     });
 
 
