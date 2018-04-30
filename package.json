@@ -1,6 +1,9 @@
 {
   "name": "spotifoo",
   "version": "1.0.0",
+  "engines": { 
+        "node": "8.x"
+  },
   "description": "Music/playlist API",
   "main": "server.js",
   "directories": {
