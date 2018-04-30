@@ -99,5 +99,23 @@ describe('Playlist API', () => {
             });
     });
 
+    it('deletes a playlist', () => {
+        return request.delete(`/playlists/${playlist1._id}`)
+            .then(() => {
+                return request.get(`/playlists/${playlist1._id}`);
+            })
+            .then(res => {
+                assert.equal(res.status, 404);
+            });
+    });
+
+    it('returns 404 with non-existent id', () => {
+        return request.get(`/playlists/${playlist1._id}`)
+            .then(response => {
+                assert.equal(response.status, 404);
+                assert.match(response.body.error, new RegExp(playlist1._id));
+            });
+    });
+
 
 });
