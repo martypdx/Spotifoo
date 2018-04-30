@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
 
-describe.only('AUTH API', () => {
+describe('AUTH API', () => {
 
     beforeEach(() => dropCollection('users'));
 
@@ -19,7 +19,6 @@ describe.only('AUTH API', () => {
             })
             .then(({ body }) => {
                 token = body.token;
-
             });
     });
 
