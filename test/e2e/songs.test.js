@@ -49,8 +49,7 @@ describe('songs api', () => {
         return request.get(`/songs/${song1._id}`)
             .then(({ body }) => {
                 assert.deepEqual(body, song1);
-            });
-            
+            });    
     });
 
     it('updates a songs playcount', () => {

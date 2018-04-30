@@ -56,11 +56,28 @@ describe('Playlist API', () => {
 
     const getFields = ({ _id, name, playlistCount }) => ({ _id, name, playlistCount });
 
-    it('gets all songs', () => {
+    it('gets all playlists', () => {
         return request.get('/playlists')
             .then(({ body }) => {
                 assert.deepEqual(body, [playlist1].map(getFields));
             });
+    });
+
+    it('gets a playlist by id', () => {
+        return request.get(`/playlists/${playlist1._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, {
+                    _id: playlist1._id,
+                    __v: 0,
+                    name: playlist1.name,
+                    songs: [{
+                        _id: song1._id,
+                        title: song1.title,
+                        playcount: song1.playcount
+                    }],
+                    playlistCount: playlist1.playlistCount
+                });
+            });    
     });
 
 
