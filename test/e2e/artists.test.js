@@ -75,7 +75,7 @@ describe.only('Artist E2E Test', () =>{
                 assert.deepEqual(body, [artist1, artist2].map(getFields));
             });
     });
-    
+
     it('update an artist', () => {
         artist1.name = 'Bob Marley';
 
@@ -88,6 +88,17 @@ describe.only('Artist E2E Test', () =>{
             })
             .then(({ body }) => {
                 assert.equal(body.name, artist1.name);
+            });
+
+    });
+
+    it('Deletes an artist by id', () => {
+        return request.delete(`/artists/${artist2._id}`)
+            .then(() => {
+                return request.get(`/artists/${artist2._id}`);
+            }) 
+            .then(res => {
+                assert.equal(res.status, 404);
             });
 
     });
