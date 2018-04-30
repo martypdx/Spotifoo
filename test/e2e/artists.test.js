@@ -75,6 +75,22 @@ describe.only('Artist E2E Test', () =>{
                 assert.deepEqual(body, [artist1, artist2].map(getFields));
             });
     });
+    
+    it('update an artist', () => {
+        artist1.name = 'Bob Marley';
+
+        return request.put(`/artists/${artist1._id}`)
+            .send(artist1)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, artist1);
+                return request.get(`/artists/${artist1._id}`);
+            })
+            .then(({ body }) => {
+                assert.equal(body.name, artist1.name);
+            });
+
+    });
 
 
 
