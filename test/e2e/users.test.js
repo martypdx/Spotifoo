@@ -22,6 +22,13 @@ describe('User E2E', () => {
         name: 'Mr. Food Bard'
     };
 
+    let user3 = {
+        email: 'foodie@bard.com',
+        password: 'foodiebard',
+        name: 'Mr. Foodie Bard',
+        role: 'user'
+    };
+
     before(() => {
         return request
             .post('/auth/signup')
@@ -39,7 +46,16 @@ describe('User E2E', () => {
             .then(({ body }) => {
                 user2._id = verify(body.token).id;
                 user2.token = body.token;
-                console.log('TOKEN2', user2.token);
+            });
+    });
+
+    before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user3)
+            .then(({ body }) => {
+                user3._id = verify(body.token).id;
+                user3.token = body.token;
             });
     });
 
@@ -64,7 +80,7 @@ describe('User E2E', () => {
             });
     });
 
-    it.skip('PUT - Update a User - ADMIN ONLY', () => {
+    it('PUT - Update a User - ADMIN ONLY', () => {
         user2.name = 'The New Guy';
         return request.put(`/users/${user2._id}`)
             .set('Authorization', user2.token)
@@ -73,6 +89,5 @@ describe('User E2E', () => {
             .then(({ body }) => {
                 assert.equal(body.name, user2.name);
             });
-
     });
 }); 
