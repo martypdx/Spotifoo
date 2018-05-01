@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { Types } = require('mongoose');
 
-describe('Album E2E route test', () => {
+describe.only('Album E2E route test', () => {
 
     before(() => dropCollection('artists'));
     before(() => dropCollection('albums'));
