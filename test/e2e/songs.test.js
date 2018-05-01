@@ -3,16 +3,22 @@ const request = require('./request');
 const { dropCollection, createToken } = require('./db');
 const { Types } = require('mongoose');
 
-describe('songs api', () => {
+describe.only('songs api', () => {
 
     before(() => dropCollection('songs'));
 
     let song1 = {
         title: 'song1',
-        // artist: {},
+        artist: {},
         length: '3:03',
         // album: {},
         playcount: 3
+    };
+
+    let artist1 = {
+        name: 'artist1',
+        // albums: [{}]
+        genre: ['Rock']
     };
 
     const checkOk = res => {
@@ -20,7 +26,18 @@ describe('songs api', () => {
         return res;
     };
 
+    before(() => {
+        return request.post('/artists')
+            .send(artist1)
+            .then(({ body }) => {
+                artist1 = body;
+            });
+    });
+
     it('saves a song', () => {
+        song1.artist._id = artist1._id;
+        song1.artist.name = artist1.name;
+        song1.artist.genre = artist1.genre;
         return request.post('/songs')
             .send(song1)
             .then(checkOk)
@@ -28,10 +45,7 @@ describe('songs api', () => {
                 const { _id, __v } = body;
                 assert.ok(_id);
                 assert.equal(__v, 0);
-                assert.deepEqual(body, {
-                    ...song1,
-                    _id, __v
-                });
+                assert.equal(body.artist, artist1._id);
                 song1 = body;
             });
     });
