@@ -4,9 +4,17 @@ const User = require('../../lib/models/User');
 const { dropCollection, createToken } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-describe('User E2E', () => {
+describe.only('User E2E', () => {
 
     before(() => dropCollection('users'));
+    before(() => dropCollection('playlists'));
+    before(() => dropCollection('albums'));
+    before(() => dropCollection('artists'));
+    before(() => dropCollection('songs'));
+
+
+
+
     
     let user1 = {
         email: 'foo@bar.com',
@@ -27,6 +35,34 @@ describe('User E2E', () => {
         password: 'foodiebard',
         name: 'Mr. Foodie Bard',
         role: 'user'
+    };
+
+    let song1 = {
+        title: 'song1',
+        artist: {},
+        length: '3:03',
+        album: {},
+        playcount: 3
+    };
+
+    let album1 = {
+        // artist: {},
+        title: 'album1',
+        length: '2:02'
+        // tracklist: [{}]
+    };
+
+    let artist1 = {
+        name: 'artist1',
+        // albums: [{}]
+        genre: ['Rock']
+    };
+
+    let playlist1 = {
+        name: 'playlist1',
+        songs: [],
+        user: {},
+        playlistCount: 3
     };
 
     before(() => {
@@ -59,6 +95,44 @@ describe('User E2E', () => {
             });
     });
 
+    before(() => {
+        return request.post('/albums')
+            .send(album1)
+            .then(({ body }) => {
+                album1 = body;
+            });
+    });
+
+    before(() => {
+        return request.post('/artists')
+            .send(artist1)
+            .then(({ body }) => {
+                artist1 = body;
+            });
+    });
+
+    before(() => {
+        song1.artist._id = artist1._id;
+        song1.album._id = album1._id;
+        return request.post('/songs')
+            .send(song1)
+            .then(({ body }) => {
+                song1 = body;
+            });
+    });
+
+    before(() => {
+        playlist1.songs.push(song1._id);
+        playlist1.user = user1._id;
+        return request.post('/playlists')
+            .send(playlist1)
+            .then(checkOk)
+            .then(({ body }) => {
+                playlist1 = body;
+                console.log(user3.playlists);
+            });
+    });
+
     const checkOk = res => {
         if(!res.ok) throw res.error;
         return res;
@@ -69,12 +143,16 @@ describe('User E2E', () => {
             .then(({ body }) => {
                 assert.equal(body.name, user1.name);
                 assert.equal(body.email, user1.email);
+                assert.equal(body.playlists[0].name, playlist1.name);
+                assert.equal(body.playlists[0]._id, playlist1._id);
+
             });
     });
 
     it('GET - all users', () => {
         return request.get('/users')
             .then(({ body }) => {
+                console.log(body);
                 assert.equal(body[0].name, user1.name);
                 assert.equal(body[1].name, user2.name);
             });
@@ -88,6 +166,17 @@ describe('User E2E', () => {
             .then(checkOk)
             .then(({ body }) => {
                 assert.equal(body.name, user2.name);
+            });
+    });
+
+    it('DELETE - a User - ADMIN ONLY', () => {
+        return request.delete(`/users/${user3._id}`)
+            .set('Authorization', user2.token)
+            .then(() => {
+                return request.get(`/users/${user3._id}`);
+            })
+            .then(res => {
+                assert.equal(res.status, 404);
             });
     });
 }); 
