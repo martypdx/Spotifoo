@@ -15,10 +15,23 @@ describe('Playlist API', () => {
 
     let song1 = {
         title: 'song1',
-        // artist: {},
+        artist: {},
         length: '3:03',
-        // album: {},
+        album: {},
         playcount: 3
+    };
+
+    let album1 = {
+        // artist: {},
+        title: 'album1',
+        length: '2:02'
+        // tracklist: [{}]
+    };
+
+    let artist1 = {
+        name: 'artist1',
+        // albums: [{}]
+        genre: ['Rock']
     };
 
     let playlist1 = {
@@ -29,6 +42,24 @@ describe('Playlist API', () => {
     };
 
     before(() => {
+        return request.post('/albums')
+            .send(album1)
+            .then(({ body }) => {
+                album1 = body;
+            });
+    });
+
+    before(() => {
+        return request.post('/artists')
+            .send(artist1)
+            .then(({ body }) => {
+                artist1 = body;
+            });
+    });
+
+    before(() => {
+        song1.artist._id = artist1._id;
+        song1.album._id = album1._id;
         return request.post('/songs')
             .send(song1)
             .then(({ body }) => {
@@ -66,6 +97,7 @@ describe('Playlist API', () => {
     it('gets a playlist by id', () => {
         return request.get(`/playlists/${playlist1._id}`)
             .then(({ body }) => {
+                console.log('BODY', body);
                 assert.deepEqual(body, {
                     _id: playlist1._id,
                     __v: 0,
@@ -73,6 +105,7 @@ describe('Playlist API', () => {
                     songs: [{
                         _id: song1._id,
                         title: song1.title,
+                        artist: artist1._id,
                         playcount: song1.playcount
                     }],
                     playlistCount: playlist1.playlistCount

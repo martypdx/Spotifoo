@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection, createToken } = require('./db');
 const { Types } = require('mongoose');
 
-describe.only('songs api', () => {
+describe('songs api', () => {
 
     before(() => dropCollection('songs'));
 
@@ -77,8 +77,24 @@ describe.only('songs api', () => {
     it('gets a song by id', () => {
         return request.get(`/songs/${song1._id}`)
             .then(({ body }) => {
-                console.log('BODY', body);
-                assert.deepEqual(body, song1);
+                console.log('BODY SONG', body);
+                assert.deepEqual(body, {
+                    _id: song1._id,
+                    __v: 0, 
+                    title: song1.title,
+                    artist: {
+                        _id: artist1._id,
+                        name: artist1.name,
+                        genre: artist1.genre
+                    },
+                    length: song1.length,
+                    album: {
+                        _id: album1._id,
+                        title: album1.title,
+                        length: album1.length
+                    },
+                    playcount: song1.playcount
+                });
             });    
     });
 
