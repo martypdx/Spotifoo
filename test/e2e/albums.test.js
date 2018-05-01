@@ -17,7 +17,6 @@ describe('Album E2E route test', () => {
         title: 'song1',
         artist: {},
         length: '3:03',
-        // album: {},
         playcount: 3
     };
 
@@ -37,14 +36,12 @@ describe('Album E2E route test', () => {
     });
 
     let album1 = {
-        artist: {},
         title: 'Synesthetica',
         length: '40min',
         tracklist: []
     };
 
     let album2 = {
-        //artist:{},
         title: 'Truth is a Beautiful Thing',
         length: '1hour 19min',
         tracklist: []
@@ -63,7 +60,6 @@ describe('Album E2E route test', () => {
 
 
     it('posts an album to the db', () => {
-        album1.artist._id = artist1._id;
         album1.tracklist.push(song1._id);
         return request.post('/albums')
             .send(album1)
@@ -72,27 +68,29 @@ describe('Album E2E route test', () => {
                 const { _id, __v } = body;
                 assert.ok(_id);
                 assert.equal(__v, 0);
-                assert.equal(body.artist, artist1._id);
-                // assert.deepEqual(body, {
-                //     ...album1,
-                //     _id, __v
-                // });
+                assert.deepEqual(body, { ...album1, _id, __v });
                 album1 = body;
+            });
+    });
+
+    it('adds an album to artists albums', () => {
+        artist1.albums.push(album1._id);
+        return request.put(`/artists/${artist1._id}`)
+            .send(artist1)
+            .then(({ body }) => {
+                artist1 = body;
             });
     });
 
     it('gets albums by id', () => {
         return request.get(`/albums/${album1._id}`)
             .then(({ body }) => {
-                console.log(body);
-                assert.equal(body.artist.name, 'Radiation City');
-                assert.equal(body.title, album1.title);
-                assert.equal(body.tracklist[0].title, song1.title);
+                assert.equal(body.artist[0]._id, artist1._id);
             });
 
     });
 
-    it('get all artists', () => {
+    it('get all albums', () => {
         return request.post('/albums')
             .send(album2)
             .then(checkOk)
@@ -121,7 +119,7 @@ describe('Album E2E route test', () => {
             });
     });
 
-    it('Delets an album by id', () => {
+    it('Deletes an album by id', () => {
         return request.delete(`/albums/${album1._id}`)
             .then(() => {
                 return request.get(`/albums/${album1._id}`);

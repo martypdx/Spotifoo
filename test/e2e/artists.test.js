@@ -3,35 +3,52 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 
 describe('Artist E2E Test', () =>{
+
     before(() => dropCollection('albums'));
     before(() => dropCollection('artists'));
+    before(() => dropCollection('songs'));
 
     let album1 = {
-        //artist: {},
         title: 'Hounds of Love',
         length: '40 minutes',
-        //tracklist: [{}]
+        tracklist: []
+    };
+
+    let song1 = {
+        artist: {},
+        title: 'song1',
+        length: '3:03',
+        playcount: 3
+    };
+
+    let artist1 = {
+        name: 'Kate Bush',
+        albums: [],
+        genre: 'Alternative'
+    };
+
+    let artist2 = {
+        name: 'Grimes',
+        albums: [],
+        genre: 'Pop'
     };
 
     before(() => {
+        return request.post('/songs')
+            .send(song1)
+            .then(({ body }) => {
+                song1 = body;
+            });
+    });
+
+    before(() => {
+        album1.tracklist.push(song1._id);
         return request.post('/albums')
             .send(album1)
             .then(({ body }) => {
                 album1 = body;
             });
     });
-
-    let artist1 = {
-        name:'Kate Bush',
-        albums:[],
-        genre: 'Alternative'
-    };
-
-    let artist2 = {
-        name:'Grimes',
-        albums:[],
-        genre: 'Pop'
-    };
 
     const checkOk = res => {
         if(!res.ok) throw res.error;
@@ -41,6 +58,7 @@ describe('Artist E2E Test', () =>{
     const getFields = ({ _id, __v, name }) => ({ _id, __v, name });
 
     it('posts an artist to the db', () => {
+        artist1.albums.push(album1._id);
         return request.post('/artists')
             .send(artist1)
             .then(checkOk)
@@ -59,7 +77,7 @@ describe('Artist E2E Test', () =>{
     it('gets artist by id', () => {
         return request.get(`/artists/${artist1._id}`)
             .then(({ body }) => {
-                assert.deepEqual(body, artist1);
+                assert.equal(body.albums[0].title, album1.title);
             });
     
     });

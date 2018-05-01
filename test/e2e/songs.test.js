@@ -6,25 +6,24 @@ const { Types } = require('mongoose');
 describe('songs api', () => {
 
     before(() => dropCollection('songs'));
+    before(() => dropCollection('albums'));
+    before(() => dropCollection('artists'));
 
     let song1 = {
         title: 'song1',
         artist: {},
         length: '3:03',
-        album: {},
         playcount: 3
     };
 
     let album1 = {
-        // artist: {},
         title: 'album1',
-        length: '2:02'
-        // tracklist: {}
+        length: '2:02',
+        tracklist: []
     };
 
     let artist1 = {
         name: 'artist1',
-        // albums: [{}]
         genre: ['Rock']
     };
 
@@ -32,14 +31,6 @@ describe('songs api', () => {
         if(!res.ok) throw res.error;
         return res;
     };
-
-    before(() => {
-        return request.post('/albums')
-            .send(album1)
-            .then(({ body }) => {
-                album1 = body;
-            });
-    });
 
     before(() => {
         return request.post('/artists')
@@ -51,7 +42,6 @@ describe('songs api', () => {
 
     it('saves a song', () => {
         song1.artist._id = artist1._id;
-        song1.album._id = album1._id;
         return request.post('/songs')
             .send(song1)
             .then(checkOk)
@@ -60,7 +50,6 @@ describe('songs api', () => {
                 assert.ok(_id);
                 assert.equal(__v, 0);
                 assert.equal(body.artist, artist1._id);
-                assert.equal(body.album, album1._id);
                 song1 = body;
             });
     });
@@ -71,6 +60,15 @@ describe('songs api', () => {
         return request.get('/songs')
             .then(({ body }) => {
                 assert.deepEqual(body, [song1].map(getFields));
+            });
+    });
+
+    it('adds a song to an albums tracklist', () => {
+        album1.tracklist.push(song1._id);
+        return request.post('/albums')
+            .send(album1)
+            .then(({ body }) => {
+                album1 = body;
             });
     });
 
@@ -88,11 +86,11 @@ describe('songs api', () => {
                         genre: artist1.genre
                     },
                     length: song1.length,
-                    album: {
+                    album: [{
                         _id: album1._id,
                         title: album1.title,
                         length: album1.length
-                    },
+                    }],
                     playcount: song1.playcount
                 });
             });    
