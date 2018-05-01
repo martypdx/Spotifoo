@@ -126,7 +126,7 @@ describe.only('Playlist API', () => {
                         artist: artist1._id,
                         playcount: song1.playcount
                     }],
-                    user: user1._id,
+                    user: { _id: user1._id, name: user1.name },
                     playlistCount: playlist1.playlistCount
                 });
             });    
