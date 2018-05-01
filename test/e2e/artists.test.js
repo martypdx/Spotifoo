@@ -2,14 +2,16 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
 
-describe.only('Artist E2E Test', () =>{
+describe('Artist E2E Test', () =>{
     before(() => dropCollection('albums'));
     before(() => dropCollection('artists'));
 
-    let album1 = ({
+    let album1 = {
+        //artist: {},
         title: 'Hounds of Love',
         length: '40 minutes',
-    });
+        //tracklist: [{}]
+    };
 
     before(() => {
         return request.post('/albums')
