@@ -11,8 +11,15 @@ describe.only('songs api', () => {
         title: 'song1',
         artist: {},
         length: '3:03',
-        // album: {},
+        album: {},
         playcount: 3
+    };
+
+    let album1 = {
+        // artist: {},
+        title: 'album1',
+        length: '2:02'
+        // tracklist: {}
     };
 
     let artist1 = {
@@ -27,6 +34,14 @@ describe.only('songs api', () => {
     };
 
     before(() => {
+        return request.post('/albums')
+            .send(album1)
+            .then(({ body }) => {
+                album1 = body;
+            });
+    });
+
+    before(() => {
         return request.post('/artists')
             .send(artist1)
             .then(({ body }) => {
@@ -36,8 +51,7 @@ describe.only('songs api', () => {
 
     it('saves a song', () => {
         song1.artist._id = artist1._id;
-        song1.artist.name = artist1.name;
-        song1.artist.genre = artist1.genre;
+        song1.album._id = album1._id;
         return request.post('/songs')
             .send(song1)
             .then(checkOk)
@@ -46,6 +60,7 @@ describe.only('songs api', () => {
                 assert.ok(_id);
                 assert.equal(__v, 0);
                 assert.equal(body.artist, artist1._id);
+                assert.equal(body.album, album1._id);
                 song1 = body;
             });
     });
@@ -62,6 +77,7 @@ describe.only('songs api', () => {
     it('gets a song by id', () => {
         return request.get(`/songs/${song1._id}`)
             .then(({ body }) => {
+                console.log('BODY', body);
                 assert.deepEqual(body, song1);
             });    
     });
