@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { Types } = require('mongoose');
 
-describe.only('Album E2E route test', () => {
+describe('Album E2E route test', () => {
 
     before(() => dropCollection('artists'));
     before(() => dropCollection('albums'));
@@ -85,7 +85,6 @@ describe.only('Album E2E route test', () => {
     it('gets albums by id', () => {
         return request.get(`/albums/${album1._id}`)
             .then(({ body }) => {
-                console.log(body);
                 assert.equal(body.artist[0]._id, artist1._id);
             });
 

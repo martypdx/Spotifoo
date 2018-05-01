@@ -15,6 +15,7 @@ describe('Artist E2E Test', () =>{
     };
 
     let song1 = {
+        artist: {},
         title: 'song1',
         length: '3:03',
         playcount: 3
