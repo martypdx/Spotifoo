@@ -2,11 +2,14 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection, createToken } = require('./db');
 const { Types } = require('mongoose');
+const { verify } = require('../../lib/util/token-service');
+
 
 describe('Playlist API', () => {
 
     before(() => dropCollection('songs'));
     before(() => dropCollection('playlists'));
+    before(() => dropCollection('users'));
 
     const checkOk = res => {
         if(!res.ok) throw res.error;
@@ -37,9 +40,26 @@ describe('Playlist API', () => {
     let playlist1 = {
         name: 'playlist1',
         songs: [],
-        // user: {},
+        user: {},
         playlistCount: 3
     };
+
+    let user1 = {
+        email: 'foo@bar.com',
+        password: 'foobar',
+        role: 'admin',
+        name: 'Mr. Foo Bar'
+    };
+
+    before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user1)
+            .then(({ body }) => {
+                user1._id = verify(body.token).id;
+                user1.token = body.token;
+            });
+    });
 
     before(() => {
         return request.post('/albums')
@@ -69,7 +89,7 @@ describe('Playlist API', () => {
 
     it('saves a playlist', () => {
         playlist1.songs.push(song1._id);
-
+        playlist1.user = user1._id;
         return request.post('/playlists')
             .send(playlist1)
             .then(checkOk)
@@ -77,10 +97,8 @@ describe('Playlist API', () => {
                 const { _id, __v } = body;
                 assert.ok(_id);
                 assert.equal(__v, 0);
-                assert.deepEqual(body, {
-                    ...playlist1,
-                    _id, __v 
-                });
+                assert.equal(body.name, playlist1.name);
+                assert.equal(body.user, user1._id);
                 playlist1 = body;
             });
     });
@@ -108,6 +126,7 @@ describe('Playlist API', () => {
                         artist: artist1._id,
                         playcount: song1.playcount
                     }],
+                    user: { _id: user1._id, name: user1.name },
                     playlistCount: playlist1.playlistCount
                 });
             });    
