@@ -168,4 +168,15 @@ describe.only('User E2E', () => {
                 assert.equal(body.name, user2.name);
             });
     });
+
+    it('DELETE - a User - ADMIN ONLY', () => {
+        return request.delete(`/users/${user3._id}`)
+            .set('Authorization', user2.token)
+            .then(() => {
+                return request.get(`/users/${user3._id}`);
+            })
+            .then(res => {
+                assert.equal(res.status, 404);
+            });
+    });
 }); 
