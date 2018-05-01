@@ -7,7 +7,6 @@ describe('Album model', () => {
     
     it('valid good model', () => {
         const data = {
-            artist: Types.ObjectId(),
             title: 'album1',
             length: '1:00:2',
             tracklist: [Types.ObjectId()]

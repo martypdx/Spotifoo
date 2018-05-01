@@ -10,7 +10,6 @@ describe('Song model', () => {
             title: 'song1',
             artist: Types.ObjectId(),
             length: '2:02',
-            album: Types.ObjectId(),
             playcount: 3
         };
 

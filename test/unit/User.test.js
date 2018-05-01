@@ -31,7 +31,6 @@ describe('User Model', () => {
         data._id = user._id;
         data.hash = user.hash;
         data.following = [];
-        data.playlists = [];
         assert.deepEqual(data, user.toJSON());
     });
 
