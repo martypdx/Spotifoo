@@ -101,7 +101,7 @@ describe('Playlist API', () => {
             });
     });
 
-    const getFields = ({ _id, name, playlistCount }) => ({ _id, name, playlistCount });
+    const getFields = ({ _id, name, songs, user, playlistCount }) => ({ _id, name, songs, user, playlistCount });
 
     it('gets all playlists', () => {
         return request.get('/playlists')

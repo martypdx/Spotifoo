@@ -55,7 +55,7 @@ describe('Artist E2E Test', () =>{
         return res;
     };
 
-    const getFields = ({ _id, __v, name }) => ({ _id, __v, name });
+    const getFields = ({ _id, name, albums, genre }) => ({ _id, name, albums, genre });
 
     it('posts an artist to the db', () => {
         artist1.albums.push(album1._id);
