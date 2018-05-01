@@ -13,6 +13,14 @@ describe.only('Album E2E route test', () => {
         return res;
     };
 
+    let song1 = {
+        title: 'song1',
+        artist: {},
+        length: '3:03',
+        // album: {},
+        playcount: 3
+    };
+
     let artist1 = {
         name:'Radiation City',
         albums: [],
@@ -24,11 +32,12 @@ describe.only('Album E2E route test', () => {
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
+
             });
     });
 
     let album1 = {
-        // artist: {},
+        artist: {},
         title: 'Synesthetica',
         length: '40min',
         tracklist: []
@@ -41,10 +50,21 @@ describe.only('Album E2E route test', () => {
         tracklist: []
     };
 
+    before(() => {
+        song1.artist._id = artist1._id;
+        return request.post('/songs')
+            .send(song1)
+            .then(({ body }) => {
+                song1 = body;
+            });
+    });
+
     const getFields = ({ _id, __v, title }) => ({ _id, __v, title });
 
 
     it('posts an album to the db', () => {
+        album1.artist._id = artist1._id;
+        album1.tracklist.push(song1._id);
         return request.post('/albums')
             .send(album1)
             .then(checkOk)
@@ -52,10 +72,11 @@ describe.only('Album E2E route test', () => {
                 const { _id, __v } = body;
                 assert.ok(_id);
                 assert.equal(__v, 0);
-                assert.deepEqual(body, {
-                    ...album1,
-                    _id, __v
-                });
+                assert.equal(body.artist, artist1._id);
+                // assert.deepEqual(body, {
+                //     ...album1,
+                //     _id, __v
+                // });
                 album1 = body;
             });
     });
@@ -63,7 +84,10 @@ describe.only('Album E2E route test', () => {
     it('gets albums by id', () => {
         return request.get(`/albums/${album1._id}`)
             .then(({ body }) => {
-                assert.deepEqual(body, album1);
+                console.log(body);
+                assert.equal(body.artist.name, 'Radiation City');
+                assert.equal(body.title, album1.title);
+                assert.equal(body.tracklist[0].title, song1.title);
             });
 
     });

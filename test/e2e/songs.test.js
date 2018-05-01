@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection, createToken } = require('./db');
 const { Types } = require('mongoose');
 
-describe.only('songs api', () => {
+describe('songs api', () => {
 
     before(() => dropCollection('songs'));
 
