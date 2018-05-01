@@ -1,7 +1,6 @@
 const { assert } = require('chai');
 const request = require('./request');
-const User = require('../../lib/models/User');
-const { dropCollection, createToken } = require('./db');
+const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
 describe('User E2E', () => {

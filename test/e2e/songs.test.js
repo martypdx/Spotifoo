@@ -1,7 +1,6 @@
 const { assert } = require('chai');
 const request = require('./request');
-const { dropCollection, createToken } = require('./db');
-const { Types } = require('mongoose');
+const { dropCollection } = require('./db');
 
 describe('songs api', () => {
 
