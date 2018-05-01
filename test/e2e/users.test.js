@@ -28,6 +28,7 @@ describe('User E2E', () => {
             .send(user1)
             .then(({ body }) => {
                 user1._id = verify(body.token).id;
+                user1.token = body.token;
             });
     });
 
@@ -37,8 +38,15 @@ describe('User E2E', () => {
             .send(user2)
             .then(({ body }) => {
                 user2._id = verify(body.token).id;
+                user2.token = body.token;
+                console.log('TOKEN2', user2.token);
             });
     });
+
+    const checkOk = res => {
+        if(!res.ok) throw res.error;
+        return res;
+    };
    
     it('GET - a user by ID', () => {
         return request.get(`/users/${user1._id}`)
@@ -54,5 +62,17 @@ describe('User E2E', () => {
                 assert.equal(body[0].name, user1.name);
                 assert.equal(body[1].name, user2.name);
             });
+    });
+
+    it.skip('PUT - Update a User - ADMIN ONLY', () => {
+        user2.name = 'The New Guy';
+        return request.put(`/users/${user2._id}`)
+            .set('Authorization', user2.token)
+            .send(user2)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.name, user2.name);
+            });
+
     });
 }); 
