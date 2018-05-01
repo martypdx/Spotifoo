@@ -33,7 +33,6 @@ describe('Playlist API', () => {
 
     let artist1 = {
         name: 'artist1',
-        // albums: [{}]
         genre: ['Rock']
     };
 
@@ -121,8 +120,13 @@ describe('Playlist API', () => {
                     name: playlist1.name,
                     songs: [{
                         _id: song1._id,
+                        __v: 0,
                         title: song1.title,
-                        artist: artist1._id,
+                        artist: {
+                            _id: artist1._id,
+                            name: artist1.name
+                        },
+                        length: song1.length,
                         playcount: song1.playcount
                     }],
                     user: { _id: user1._id, name: user1.name },

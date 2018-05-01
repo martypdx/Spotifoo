@@ -75,7 +75,6 @@ describe('songs api', () => {
     it('gets a song by id', () => {
         return request.get(`/songs/${song1._id}`)
             .then(({ body }) => {
-                console.log('BODY SONG', body);
                 assert.deepEqual(body, {
                     _id: song1._id,
                     __v: 0, 

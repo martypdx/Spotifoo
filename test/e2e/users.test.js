@@ -4,7 +4,7 @@ const User = require('../../lib/models/User');
 const { dropCollection, createToken } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-describe.only('User E2E', () => {
+describe('User E2E', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('playlists'));
@@ -46,15 +46,12 @@ describe.only('User E2E', () => {
     };
 
     let album1 = {
-        // artist: {},
         title: 'album1',
         length: '2:02'
-        // tracklist: [{}]
     };
 
     let artist1 = {
         name: 'artist1',
-        // albums: [{}]
         genre: ['Rock']
     };
 
@@ -129,7 +126,6 @@ describe.only('User E2E', () => {
             .then(checkOk)
             .then(({ body }) => {
                 playlist1 = body;
-                console.log(user3.playlists);
             });
     });
 
@@ -152,7 +148,6 @@ describe.only('User E2E', () => {
     it('GET - all users', () => {
         return request.get('/users')
             .then(({ body }) => {
-                console.log(body);
                 assert.equal(body[0].name, user1.name);
                 assert.equal(body[1].name, user2.name);
             });
