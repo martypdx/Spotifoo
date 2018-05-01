@@ -17,7 +17,6 @@ describe('Album E2E route test', () => {
         title: 'song1',
         artist: {},
         length: '3:03',
-        // album: {},
         playcount: 3
     };
 
@@ -44,7 +43,6 @@ describe('Album E2E route test', () => {
     };
 
     let album2 = {
-        //artist:{},
         title: 'Truth is a Beautiful Thing',
         length: '1hour 19min',
         tracklist: []
@@ -73,10 +71,6 @@ describe('Album E2E route test', () => {
                 assert.ok(_id);
                 assert.equal(__v, 0);
                 assert.equal(body.artist, artist1._id);
-                // assert.deepEqual(body, {
-                //     ...album1,
-                //     _id, __v
-                // });
                 album1 = body;
             });
     });
@@ -121,7 +115,7 @@ describe('Album E2E route test', () => {
             });
     });
 
-    it('Delets an album by id', () => {
+    it('Deletes an album by id', () => {
         return request.delete(`/albums/${album1._id}`)
             .then(() => {
                 return request.get(`/albums/${album1._id}`);

@@ -7,6 +7,8 @@ describe('Playlist API', () => {
 
     before(() => dropCollection('songs'));
     before(() => dropCollection('playlists'));
+    before(() => dropCollection('albums'));
+    before(() => dropCollection('artists'));
 
     const checkOk = res => {
         if(!res.ok) throw res.error;
@@ -22,10 +24,8 @@ describe('Playlist API', () => {
     };
 
     let album1 = {
-        // artist: {},
         title: 'album1',
         length: '2:02'
-        // tracklist: [{}]
     };
 
     let artist1 = {
@@ -97,7 +97,6 @@ describe('Playlist API', () => {
     it('gets a playlist by id', () => {
         return request.get(`/playlists/${playlist1._id}`)
             .then(({ body }) => {
-                console.log('BODY', body);
                 assert.deepEqual(body, {
                     _id: playlist1._id,
                     __v: 0,

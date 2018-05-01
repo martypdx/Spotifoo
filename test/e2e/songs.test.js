@@ -6,6 +6,8 @@ const { Types } = require('mongoose');
 describe('songs api', () => {
 
     before(() => dropCollection('songs'));
+    before(() => dropCollection('albums'));
+    before(() => dropCollection('artists'));
 
     let song1 = {
         title: 'song1',
@@ -16,15 +18,12 @@ describe('songs api', () => {
     };
 
     let album1 = {
-        // artist: {},
         title: 'album1',
         length: '2:02'
-        // tracklist: {}
     };
 
     let artist1 = {
         name: 'artist1',
-        // albums: [{}]
         genre: ['Rock']
     };
 
