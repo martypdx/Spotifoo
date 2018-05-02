@@ -1,0 +1,28 @@
+/*logo color keys: 290404*/
+
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Poppins');
+body {
+    background-image: url('../images/SpotifooLOGO.png');
+    /* background-color: tan; */
+}
+
+h1 {
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+#summary {
+    text-align: center;
+}
+
+section {
+    float: left;
+    margin: 0 1%;
+    width: 50%;
+}
+
+aside {
+    float: right;
+    margin: 0 1%;
+    width: 40%;
+}
