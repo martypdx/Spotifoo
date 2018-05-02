@@ -87,7 +87,7 @@ describe('songs api', () => {
             });
     });
 
-    const getFields = ({ _id, title, playcount }) => ({ _id, title, playcount });
+    const getFields = ({ _id, title, artist, length, playcount }) => ({ _id, title, artist, length, playcount });
 
     it('gets all songs', () => {
         return request.get('/songs')

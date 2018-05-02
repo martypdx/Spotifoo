@@ -76,7 +76,7 @@ describe('Album E2E route test', () => {
             });
     });
 
-    const getFields = ({ _id, __v, title }) => ({ _id, __v, title });
+    const getFields = ({ _id, title, length, tracklist }) => ({ _id, title, length, tracklist });
 
 
     it('posts an album to the db', () => {
