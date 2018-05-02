@@ -85,6 +85,7 @@ describe('Playlist API', () => {
 
     before(() => {
         return request.post('/albums')
+            .set('Authorization', user1.token)
             .send(album1)
             .then(({ body }) => {
                 album1 = body;
@@ -175,6 +176,7 @@ describe('Playlist API', () => {
         playlist1.playlistCount = playlist1.playlistCount + 1;
         song1.playcount = song1.playcount + 1;
         return request.put(`/songs/${song1._id}`)
+            .set('Authorization', user1.token)
             .send(song1)
             .then(() => {
                 return request.put(`/playlists/${playlist1._id}`)
