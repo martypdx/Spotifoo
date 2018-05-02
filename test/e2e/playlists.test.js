@@ -86,6 +86,7 @@ describe.only('Playlist API', () => {
 
     before(() => {
         return request.post('/artists')
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
@@ -96,6 +97,7 @@ describe.only('Playlist API', () => {
         song1.artist._id = artist1._id;
         song1.album._id = album1._id;
         return request.post('/songs')
+            .set('Authorization', user1.token)
             .send(song1)
             .then(({ body }) => {
                 song1 = body;

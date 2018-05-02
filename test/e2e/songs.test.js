@@ -1,12 +1,22 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const { verify } = require('../../lib/util/token-service');
+
 
 describe('songs api', () => {
 
+    before(() => dropCollection('users'));
     before(() => dropCollection('songs'));
     before(() => dropCollection('albums'));
     before(() => dropCollection('artists'));
+
+    let user1 = {
+        email: 'foo@bar.com',
+        password: 'foobar',
+        role: 'admin',
+        name: 'Mr. Foo Bar'
+    };
 
     let song1 = {
         title: 'song1',
@@ -32,7 +42,19 @@ describe('songs api', () => {
     };
 
     before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user1)
+            .then(({ body }) => {
+                user1._id = verify(body.token).id;
+                user1.token = body.token;
+                console.log('Token: ' + body.token);
+            });
+    });
+
+    before(() => {
         return request.post('/artists')
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
@@ -42,6 +64,7 @@ describe('songs api', () => {
     it('saves a song', () => {
         song1.artist._id = artist1._id;
         return request.post('/songs')
+            .set('Authorization', user1.token)
             .send(song1)
             .then(checkOk)
             .then(({ body }) => {
@@ -65,6 +88,7 @@ describe('songs api', () => {
     it('adds a song to an albums tracklist', () => {
         album1.tracklist.push(song1._id);
         return request.post('/albums')
+            .set('Authorization', user1.token)
             .send(album1)
             .then(({ body }) => {
                 album1 = body;
@@ -73,6 +97,7 @@ describe('songs api', () => {
 
     it('gets a song by id', () => {
         return request.get(`/songs/${song1._id}`)
+            .set('Authorization', user1.token)
             .then(({ body }) => {
                 assert.deepEqual(body, {
                     _id: song1._id,
@@ -97,6 +122,7 @@ describe('songs api', () => {
     it('updates a songs playcount', () => {
         song1.playcount = song1.playcount + 1;
         return request.put(`/songs/${song1._id}`)
+            .set('Authorization', user1.token)
             .send(song1)
             .then(checkOk)
             .then(({ body }) => {
@@ -110,6 +136,7 @@ describe('songs api', () => {
 
     it('deletes a song', () => {
         return request.delete(`/songs/${song1._id}`)
+            .set('Authorization', user1.token)
             .then(() => {
                 return request.get(`/songs/${song1._id}`);
             })
