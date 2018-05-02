@@ -192,4 +192,17 @@ describe.only('User E2E', () => {
             });
             
     });
+
+    it('Removes a User from Following List', () => {
+        return request.delete(`/users/${user1._id}/following/${followerUser._id}`)
+            .set('Authorization', user1.token)
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/users/${user1._id}`);
+            })
+            .then(({ body }) => {
+                assert.deepEqual(body.following, []);
+            });
+
+    });
 }); 
