@@ -103,6 +103,7 @@ describe('Playlist API', () => {
     before(() => {
         playlist2.user = user1._id;
         return request.post('/playlists')
+            .set('Authorization', user1.token)
             .send(playlist2)
             .then(({ body }) => {
                 playlist2 = body;
@@ -189,12 +190,9 @@ describe('Playlist API', () => {
                     });
             });
     });
-  
-    it('deletes a playlist', () => {
-        return request.delete(`/playlists/${playlist2._id}`)
 
     it('deletes a playlist - MUST BE SAME USER', () => {
-        return request.delete(`/playlists/${user1._id}/${playlist1._id}`)
+        return request.delete(`/playlists/${user1._id}/${playlist2._id}`)
             .set('Authorization', user1.token)
             .then(() => {
                 return request.get(`/playlists/${playlist2._id}`);
@@ -232,6 +230,7 @@ describe('Playlist API', () => {
         before(() => {
             song2.artist._id = artist1._id;
             return request.post('/songs')
+                .set('Authorization', user1.token)
                 .send(song2)
                 .then(({ body }) => {
                     song2 = body;
@@ -240,6 +239,7 @@ describe('Playlist API', () => {
 
         it('adds a song to playlist1', () => {
             return request.post(`/playlists/${playlist1._id}/pl-songs`)
+                .set('Authorization', user1.token)
                 .send(song2)
                 .then(checkOk)
                 .then(({ body }) => {
@@ -255,6 +255,7 @@ describe('Playlist API', () => {
 
         it('Removes a song', () => {
             return request.delete(`/playlists/${playlist1._id}/pl-songs/${song2._id}`)
+                .set('Authorization', user1.token)
                 .then(checkOk)
                 .then(() => {
                     return request.get(`/playlists/${playlist1._id}`);
