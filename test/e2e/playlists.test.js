@@ -49,6 +49,13 @@ describe.only('Playlist API', () => {
         name: 'Mr. Foo Bar'
     };
 
+    let user2 = {
+        email: 'foo@dbar.com',
+        password: 'foodbar',
+        role: 'user',
+        name: 'Mr. Food Bar'
+    };
+
     before(() => {
         return request
             .post('/auth/signup')
@@ -56,6 +63,16 @@ describe.only('Playlist API', () => {
             .then(({ body }) => {
                 user1._id = verify(body.token).id;
                 user1.token = body.token;
+            });
+    });
+
+    before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user2)
+            .then(({ body }) => {
+                user2._id = verify(body.token).id;
+                user2.token = body.token;
             });
     });
 
@@ -163,6 +180,14 @@ describe.only('Playlist API', () => {
             })
             .then(res => {
                 assert.equal(res.status, 404);
+            });
+    });
+
+    it('Tries to delete a playlist - NOT SAME USER', () => {
+        return request.delete(`/playlists/${user1._id}/${playlist1._id}`)
+            .set('Authorization', user2.token)
+            .then(res => {
+                assert.equal(res.status, 403);
             });
     });
 
