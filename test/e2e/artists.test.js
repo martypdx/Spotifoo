@@ -25,7 +25,6 @@ describe('Artist E2E Test', () =>{
     };
 
     let song1 = {
-        artist: {},
         title: 'song1',
         length: '3:03',
         playcount: 3
@@ -50,12 +49,12 @@ describe('Artist E2E Test', () =>{
             .then(({ body }) => {
                 user1._id = verify(body.token).id;
                 user1.token = body.token;
-                console.log('Token: ' + body.token);
             });
     });
 
     before(() => {
         return request.post('/songs')
+            .set('Authorization', user1.token)
             .send(song1)
             .then(({ body }) => {
                 song1 = body;

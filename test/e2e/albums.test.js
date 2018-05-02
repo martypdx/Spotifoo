@@ -40,7 +40,6 @@ describe('Album E2E route test', () => {
             .then(({ body }) => {
                 user1._id = verify(body.token).id;
                 user1.token = body.token;
-                console.log('Token: ' + body.token);
             });
     });
 
