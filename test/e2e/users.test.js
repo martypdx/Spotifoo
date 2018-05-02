@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-describe('User E2E', () => {
+describe.only('User E2E', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('playlists'));
@@ -11,10 +11,6 @@ describe('User E2E', () => {
     before(() => dropCollection('artists'));
     before(() => dropCollection('songs'));
 
-
-
-
-    
     let user1 = {
         email: 'foo@bar.com',
         password: 'foobar',
@@ -35,6 +31,8 @@ describe('User E2E', () => {
         name: 'Mr. Foodie Bard',
         role: 'user'
     };
+
+    let followerUser = {};
 
     let song1 = {
         title: 'song1',
@@ -61,6 +59,8 @@ describe('User E2E', () => {
         playlistCount: 3
     };
 
+    
+
     before(() => {
         return request
             .post('/auth/signup')
@@ -78,8 +78,11 @@ describe('User E2E', () => {
             .then(({ body }) => {
                 user2._id = verify(body.token).id;
                 user2.token = body.token;
+                followerUser = { _id: user2._id };
             });
     });
+
+    
 
     before(() => {
         return request
@@ -93,6 +96,7 @@ describe('User E2E', () => {
 
     before(() => {
         return request.post('/albums')
+            .set('Authorization', user2.token)
             .send(album1)
             .then(({ body }) => {
                 album1 = body;
@@ -101,6 +105,7 @@ describe('User E2E', () => {
 
     before(() => {
         return request.post('/artists')
+            .set('Authorization', user2.token)
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
@@ -111,6 +116,7 @@ describe('User E2E', () => {
         song1.artist._id = artist1._id;
         song1.album._id = album1._id;
         return request.post('/songs')
+            .set('Authorization', user2.token)
             .send(song1)
             .then(({ body }) => {
                 song1 = body;
@@ -173,5 +179,17 @@ describe('User E2E', () => {
             .then(res => {
                 assert.equal(res.status, 404);
             });
+    });
+
+    
+    it('Add Another User to Following List', () => {
+        return request.post(`/users/${user1._id}/following`)
+            .set('Authorization', user1.token)
+            .send(followerUser)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body, followerUser._id);
+            });
+            
     });
 }); 
