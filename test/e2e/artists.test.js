@@ -1,12 +1,22 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const { verify } = require('../../lib/util/token-service');
+
 
 describe('Artist E2E Test', () =>{
 
+    before(() => dropCollection('users'));
     before(() => dropCollection('albums'));
     before(() => dropCollection('artists'));
     before(() => dropCollection('songs'));
+
+    let user1 = {
+        email: 'foo@bar.com',
+        password: 'foobar',
+        role: 'admin',
+        name: 'Mr. Foo Bar'
+    };
 
     let album1 = {
         title: 'Hounds of Love',
@@ -34,6 +44,17 @@ describe('Artist E2E Test', () =>{
     };
 
     before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user1)
+            .then(({ body }) => {
+                user1._id = verify(body.token).id;
+                user1.token = body.token;
+                console.log('Token: ' + body.token);
+            });
+    });
+
+    before(() => {
         return request.post('/songs')
             .send(song1)
             .then(({ body }) => {
@@ -44,6 +65,7 @@ describe('Artist E2E Test', () =>{
     before(() => {
         album1.tracklist.push(song1._id);
         return request.post('/albums')
+            .set('Authorization', user1.token)
             .send(album1)
             .then(({ body }) => {
                 album1 = body;
@@ -60,6 +82,7 @@ describe('Artist E2E Test', () =>{
     it('posts an artist to the db', () => {
         artist1.albums.push(album1._id);
         return request.post('/artists')
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(checkOk)
             .then(({ body }) => {
@@ -84,6 +107,7 @@ describe('Artist E2E Test', () =>{
 
     it('get all artists', () => {
         return request.post('/artists')
+            .set('Authorization', user1.token)
             .send(artist2)
             .then(checkOk)
             .then(({ body }) => {
@@ -100,6 +124,7 @@ describe('Artist E2E Test', () =>{
         artist1.name = 'Bob Marley';
 
         return request.put(`/artists/${artist1._id}`)
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(checkOk)
             .then(({ body }) => {
@@ -114,6 +139,7 @@ describe('Artist E2E Test', () =>{
 
     it('Deletes an artist by id', () => {
         return request.delete(`/artists/${artist2._id}`)
+            .set('Authorization', user1.token)
             .then(() => {
                 return request.get(`/artists/${artist2._id}`);
             }) 

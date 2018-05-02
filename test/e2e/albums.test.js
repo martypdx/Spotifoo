@@ -1,15 +1,24 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const { verify } = require('../../lib/util/token-service');
 
 describe('Album E2E route test', () => {
 
+    before(() => dropCollection('users'));
     before(() => dropCollection('artists'));
     before(() => dropCollection('albums'));
 
     const checkOk = res => {
         if(!res.ok) throw res.error;
         return res;
+    };
+
+    let user1 = {
+        email: 'foo@bar.com',
+        password: 'foobar',
+        role: 'admin',
+        name: 'Mr. Foo Bar'
     };
 
     let song1 = {
@@ -24,9 +33,20 @@ describe('Album E2E route test', () => {
         albums: [],
         genre: 'Alternative'
     };
+    before(() => {
+        return request 
+            .post('/auth/signup')
+            .send(user1)
+            .then(({ body }) => {
+                user1._id = verify(body.token).id;
+                user1.token = body.token;
+                console.log('Token: ' + body.token);
+            });
+    });
 
     before(() => {
         return request.post('/artists')
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
@@ -49,6 +69,7 @@ describe('Album E2E route test', () => {
     before(() => {
         song1.artist._id = artist1._id;
         return request.post('/songs')
+            .set('Authorization', user1.token)
             .send(song1)
             .then(({ body }) => {
                 song1 = body;
@@ -61,6 +82,7 @@ describe('Album E2E route test', () => {
     it('posts an album to the db', () => {
         album1.tracklist.push(song1._id);
         return request.post('/albums')
+            .set('Authorization', user1.token)
             .send(album1)
             .then(checkOk)
             .then(({ body }) => {
@@ -75,6 +97,7 @@ describe('Album E2E route test', () => {
     it('adds an album to artists albums', () => {
         artist1.albums.push(album1._id);
         return request.put(`/artists/${artist1._id}`)
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
@@ -91,6 +114,7 @@ describe('Album E2E route test', () => {
 
     it('get all albums', () => {
         return request.post('/albums')
+            .set('Authorization', user1.token)
             .send(album2)
             .then(checkOk)
             .then(({ body }) => {
@@ -107,6 +131,7 @@ describe('Album E2E route test', () => {
         album2.title = 'Truth is Not always a Beautiful Thing';
 
         return request.put(`/albums/${album2._id}`)
+            .set('Authorization', user1.token)
             .send(album2)
             .then(checkOk)
             .then(({ body }) => {
@@ -120,6 +145,7 @@ describe('Album E2E route test', () => {
 
     it('Deletes an album by id', () => {
         return request.delete(`/albums/${album1._id}`)
+            .set('Authorization', user1.token)
             .then(() => {
                 return request.get(`/albums/${album1._id}`);
             })
