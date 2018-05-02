@@ -42,6 +42,13 @@ describe('Playlist API', () => {
         playlistCount: 3
     };
 
+    let playlist2 = {
+        name: 'playlist2',
+        songs: [],
+        user: {},
+        playlistCount: 3
+    };
+
     let user1 = {
         email: 'foo@bar.com',
         password: 'foobar',
@@ -76,6 +83,15 @@ describe('Playlist API', () => {
     });
 
     before(() => {
+        playlist2.user = user1._id;
+        return request.post('/playlists')
+            .send(playlist2)
+            .then(({ body }) => {
+                playlist2 = body;
+            });
+    });
+
+    before(() => {
         song1.artist._id = artist1._id;
         song1.album._id = album1._id;
         return request.post('/songs')
@@ -106,7 +122,7 @@ describe('Playlist API', () => {
     it('gets all playlists', () => {
         return request.get('/playlists')
             .then(({ body }) => {
-                assert.deepEqual(body, [playlist1].map(getFields));
+                assert.deepEqual(body, [playlist2, playlist1].map(getFields));
             });
     });
 
@@ -154,9 +170,9 @@ describe('Playlist API', () => {
     });
 
     it('deletes a playlist', () => {
-        return request.delete(`/playlists/${playlist1._id}`)
+        return request.delete(`/playlists/${playlist2._id}`)
             .then(() => {
-                return request.get(`/playlists/${playlist1._id}`);
+                return request.get(`/playlists/${playlist2._id}`);
             })
             .then(res => {
                 assert.equal(res.status, 404);
@@ -164,11 +180,56 @@ describe('Playlist API', () => {
     });
 
     it('returns 404 with non-existent id', () => {
-        return request.get(`/playlists/${playlist1._id}`)
+        return request.get(`/playlists/${playlist2._id}`)
             .then(response => {
                 assert.equal(response.status, 404);
-                assert.match(response.body.error, new RegExp(playlist1._id));
+                assert.match(response.body.error, new RegExp(playlist2._id));
             });
+    });
+
+    describe('PL songs API', () => {
+
+        let song2 = {
+            title: 'song2',
+            artist: {},
+            length: '4:03',
+            playcount: 4
+        };
+
+        before(() => {
+            song2.artist._id = artist1._id;
+            return request.post('/songs')
+                .send(song2)
+                .then(({ body }) => {
+                    song2 = body;
+                });
+        });
+
+        it('adds a song to playlist1', () => {
+            return request.post(`/playlists/${playlist1._id}/pl-songs`)
+                .send(song2)
+                .then(checkOk)
+                .then(({ body }) => {
+                    song2._id = body;
+                    assert.deepEqual(body, song2._id);
+
+                    return request.get(`/playlists/${playlist1._id}`);
+                })
+                .then(({ body }) => {
+                    assert.equal(body.songs.length, 2);
+                });
+        });
+
+        it('Removes a song', () => {
+            return request.delete(`/playlists/${playlist1._id}/pl-songs/${song2._id}`)
+                .then(checkOk)
+                .then(() => {
+                    return request.get(`/playlists/${playlist1._id}`);
+                })
+                .then(({ body }) => {
+                    assert.equal(body.songs.length, 1);
+                });
+        });
     });
 
 
