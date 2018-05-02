@@ -4,7 +4,7 @@ const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
 
-describe('songs api', () => {
+describe.only('songs api', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('songs'));
@@ -17,6 +17,13 @@ describe('songs api', () => {
         role: 'admin',
         name: 'Mr. Foo Bar'
     };
+
+    // let song2 = {
+    //     title: 'song2',
+    //     artist: {},
+    //     length: '4:05',
+    //     placount: 4
+    // };
 
     let song1 = {
         title: 'song1',
@@ -40,6 +47,10 @@ describe('songs api', () => {
         if(!res.ok) throw res.error;
         return res;
     };
+
+    // before(() => {
+    //     return request.post()
+    // });
 
     before(() => {
         return request
@@ -130,8 +141,20 @@ describe('songs api', () => {
                 return request.get(`/songs/${song1._id}`);
             })
             .then(({ body }) => {
+                console.log('song1 playcount: ' + song1.playcount);
                 assert.equal(body.playcount, song1.playcount);
             });
+    });
+
+    it('iterates playcount of song by one', () => {
+        return request.get(`/songs/play/${song1._id}`)
+            .set('Authorization', user1.token)
+            .then(({ body }) => {
+                console.log('this is our get console ' + body.playcount);
+    
+                assert.equal(body.playcount, 5);
+            });
+
     });
 
     it('deletes a song', () => {
@@ -152,4 +175,5 @@ describe('songs api', () => {
                 assert.match(response.body.error, new RegExp(song1._id));
             });
     });
+
 });
