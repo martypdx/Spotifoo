@@ -46,6 +46,7 @@ describe('Album E2E route test', () => {
 
     before(() => {
         return request.post('/artists')
+            .set('Authorization', user1.token)
             .send(artist1)
             .then(({ body }) => {
                 artist1 = body;
@@ -68,6 +69,7 @@ describe('Album E2E route test', () => {
     before(() => {
         song1.artist._id = artist1._id;
         return request.post('/songs')
+            .set('Authorization', user1.token)
             .send(song1)
             .then(({ body }) => {
                 song1 = body;

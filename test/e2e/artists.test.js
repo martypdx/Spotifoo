@@ -4,7 +4,7 @@ const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
 
-describe.only('Artist E2E Test', () =>{
+describe('Artist E2E Test', () =>{
 
     before(() => dropCollection('users'));
     before(() => dropCollection('albums'));

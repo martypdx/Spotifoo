@@ -4,7 +4,7 @@ const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
 
-describe.only('songs api', () => {
+describe('songs api', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('songs'));
