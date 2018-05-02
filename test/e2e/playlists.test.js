@@ -4,7 +4,7 @@ const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
 
-describe('Playlist API', () => {
+describe.only('Playlist API', () => {
 
     before(() => dropCollection('songs'));
     before(() => dropCollection('playlists'));
@@ -85,10 +85,11 @@ describe('Playlist API', () => {
             });
     });
 
-    it('saves a playlist', () => {
+    it('saves a playlist - MUST BE USER', () => {
         playlist1.songs.push(song1._id);
         playlist1.user = user1._id;
         return request.post('/playlists')
+            .set('Authorization', user1.token)
             .send(playlist1)
             .then(checkOk)
             .then(({ body }) => {
@@ -134,13 +135,14 @@ describe('Playlist API', () => {
             });    
     });
 
-    it('updates a playlists playcount an d the songs playcount as well', () => {
+    it('updates a playlists playcount and the songs playcount as well - MUST BE SAME USER', () => {
         playlist1.playlistCount = playlist1.playlistCount + 1;
         song1.playcount = song1.playcount + 1;
         return request.put(`/songs/${song1._id}`)
             .send(song1)
             .then(() => {
                 return request.put(`/playlists/${playlist1._id}`)
+                    .set('Authorization', user1.token)
                     .send(playlist1)
                     .then(checkOk)
                     .then(({ body }) => {
@@ -153,8 +155,9 @@ describe('Playlist API', () => {
             });
     });
 
-    it('deletes a playlist', () => {
-        return request.delete(`/playlists/${playlist1._id}`)
+    it('deletes a playlist - MUST BE SAME USER', () => {
+        return request.delete(`/playlists/${user1._id}/${playlist1._id}`)
+            .set('Authorization', user1.token)
             .then(() => {
                 return request.get(`/playlists/${playlist1._id}`);
             })
