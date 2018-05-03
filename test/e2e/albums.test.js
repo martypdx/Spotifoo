@@ -75,9 +75,6 @@ describe('Album E2E route test', () => {
             });
     });
 
-    const getFields = ({ _id, title, length, tracklist }) => ({ _id, title, length, tracklist });
-
-
     it('posts an album to the db', () => {
         album1.tracklist.push(song1._id);
         return request.post('/albums')
@@ -122,7 +119,7 @@ describe('Album E2E route test', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, [album1, album2].map(getFields));
+                assert.equal(body[0].tracklist[0]._id, song1._id);
             });
     });
 

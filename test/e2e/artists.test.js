@@ -75,9 +75,7 @@ describe('Artist E2E Test', () =>{
         if(!res.ok) throw res.error;
         return res;
     };
-
-    const getFields = ({ _id, name, albums, genre }) => ({ _id, name, albums, genre });
-
+    
     it('posts an artist to the db', () => {
         artist1.albums.push(album1._id);
         return request.post('/artists')
@@ -115,7 +113,7 @@ describe('Artist E2E Test', () =>{
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, [artist1, artist2].map(getFields));
+                assert.equal(body[0].albums[0]._id, album1._id);
             });
     });
 
