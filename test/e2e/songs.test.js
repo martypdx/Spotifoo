@@ -86,12 +86,10 @@ describe('songs api', () => {
             });
     });
 
-    const getFields = ({ _id, title, artist, length, playcount }) => ({ _id, title, artist, length, playcount });
-
     it('gets all songs', () => {
         return request.get('/songs')
             .then(({ body }) => {
-                assert.deepEqual(body, [song1].map(getFields));
+                assert.equal(body[0].artist._id, artist1._id);
             });
     });
 
