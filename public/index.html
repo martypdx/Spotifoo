@@ -42,6 +42,14 @@
                         <ul>
                             <li>/songs/id/ get a select song with it's mongodb generated id.</li>
                         </ul>
+                        <h3>/songs/top</h3>
+                        <ul>
+                            <li>Most played songs appear first</li>
+                        </ul>
+                        <h3>/songs/alph</h3>
+                        <ul>
+                            <li>songs appear in alphabetical order.</li>
+                        </ul>
                         <h3>/artists/</h3>
                         <ul>
                             <li>/artists/ route gets all artists in Spotifoo's database including albums and genre</li>
@@ -50,8 +58,16 @@
                         <ul>
                             <li>/artists/id/ specific artist by id.</li>
                         </ul>
+                        <h3>/artists/alph</h3>
+                        <ul>
+                            <li>all artists sorted alphabetically</li>
+                        </ul>
                     </section>
                     <aside>
+                        <h3>/artists/topGenres</h3>
+                        <ul>
+                            <li>top genres by number of artists</li>
+                        </ul>
                         <h3>/albums/</h3>
                         <ul>
                             <li>/albums/ shows all albums in our database, including song tracks and song length.</li>
@@ -61,6 +77,10 @@
                         <ul>
                             <li>/albums/id/ shows specific album with matching Spotifoo id.</li>
                         </ul>
+                        <h3>/albums/alph</h3>
+                        <ul>
+                            <li>orders album list alphabetically</li>
+                        </ul>
                         <h3>/playlists/</h3>
                         <ul>
                             <li>the playlists route gets all playlists</li>
@@ -69,6 +89,10 @@
                         <ul>
                             <li>the playlists id route get playlist by Id and to delte playlist</li>
                         </ul>
+                        <h3>/playlists/top</h3>
+                        <ul>
+                            <li>orders playlsits by playCount, starting from most played to least played.</li>
+                        </ul>
                         <h3>/plSongId/</h3>
                         <ul>
                             <li>route allows for posting and deletion of playlist songs by their ID.</li>
@@ -76,7 +100,7 @@
                     
                         <h3>/auth/</h3>
                         <ul>
-                            <li>our authentication wrote houses our /signup /signin and /verify routes which autheticate users</li>
+                            <li>our authentication route houses our /signup /signin and /verify routes which autheticate users</li>
                         </ul>
                     
                     </aside>
