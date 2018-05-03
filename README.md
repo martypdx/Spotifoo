@@ -65,6 +65,7 @@ ROUTES:
 
 /auth/
     .our authentication route houses our /signup /signin and /verify routes which autheticate users.                         
+
 Authors:
 Ryan Manro (https://github.com/rmanro)
 Steele Waltson (https://github.com/SteeleWalston)
@@ -73,7 +74,9 @@ Jeff Lonergan (https://github.com/J3ffcon1)
 Spotifoo github: https://github.com/MAGIC8BALLs/Spotifoo
 
 Contributors:
+
 Thankyou to the talented photographers at unsplash.com.(photos for our front-end site).
+
 Daniel Leone - "Poon Hill, Ghose Pani, Nepal"
 Wellington Rodrigues - "Province of Bolzano - South Tyrol, Italy"
 
