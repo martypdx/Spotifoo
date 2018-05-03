@@ -1,25 +1,117 @@
+/* @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway'); */
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,900|Raleway:400,900i');
 body {
-    background-image: url("../images/Landing page.png");
+    margin: 0;
+    padding: 0;
+}
+
+#box1 {
+    height: 100vh;
+    width: 100%;
+    background-image: url('../images/Landing page.png');
     background-size: cover;
+    display: table;
+    background-attachment: fixed;
 }
 
-nav {
-    height: 40px;
-    width: auto;
-    letter-spacing: 3px;
+/* #box2 p {
+    height:100vh;
+    text-align: center;
+    color: white;
+    display: table-cell;
+    background-attachment: fixed;
+  } */
+
+#box2 {
+    height: 100vh;
+    width: 100%;
+    background-image: url('../images/mission statement.png');
+    background-size: cover;
+    display: table;
+    background-attachment: fixed;
 }
 
-nav ul li {
-    list-style: none;
-    text-decoration: none;
-    display: inline-block;
-    /* padding: 12px; */
-    /* padding-right: 20px; */
-    margin-left: 20px;
-    color: #29445f;
+#box3 {
+    height: 100vh;
+    width: 100%;
+    background-image: url('../images/Contact.png');
+    background-size: cover;
+    display: table;
+    background-attachment: fixed;
 }
 
-li:hover {
+#box4 {
+    height: 100vh;
+    width: 100%;
+    background-image: url('../images/Routes.png');
+    background-size: cover;
+    display: table;
+    background-attachment: fixed;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5em;
+    color: white;
+    opacity: 0.75;
+    margin: 0px;
+    padding: 20px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    padding: 0 1em;
+    letter-spacing: 1px;
+    line-height: 1.75;
+    color: black;
+    font-style: unset;
+    vertical-align: middle;
+    margin: 50px;
+    padding-top: 20%;
+}
+
+section {
+    float: left;
+    margin: 0 1%;
+    width: 50%;
+}
+
+aside {
+    float: right;
+    margin: 0 1%;
+    width: 40%;
+}
+
+aside {
+    float: right;
+    margin: 0 1%;
+    width: 40%;
+}
+
+aside h3:hover {
     opacity: 0.7;
-    border-bottom: 0.5px solid red;
+    color: #d41f1f;
+    -webkit-transform: scale(1.1);
+}
+
+aside li:hover {
+    opacity: 0.7;
+    color: #d41f1f;
+    -webkit-transform: scale(1.1);
+}
+
+section h3:hover {
+    opacity: 0.7;
+    color: #d41f1f;
+    -webkit-transform: scale(1.1);
+}
+
+section li:hover {
+    opacity: 0.7;
+    color: #d41f1f;
+    -webkit-transform: scale(1.1);
 }
