@@ -165,7 +165,7 @@ describe('Playlist API', () => {
                         length: song1.length,
                         playcount: song1.playcount
                     }],
-                    user: { _id: user1._id, name: user1.name },
+                    user: { _id: user1._id, name: 'mr. foo bar' },
                     playlistCount: playlist1.playlistCount
                 });
             });    

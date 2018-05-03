@@ -143,7 +143,7 @@ describe.only('User E2E', () => {
     it('GET - a user by ID', () => {
         return request.get(`/users/${user1._id}`)
             .then(({ body }) => {
-                assert.equal(body.name, user1.name);
+                assert.equal(body.name, 'mr. foo bar');
                 assert.equal(body.email, user1.email);
                 assert.equal(body.playlists[0].name, playlist1.name);
                 assert.equal(body.playlists[0]._id, playlist1._id);
@@ -154,8 +154,8 @@ describe.only('User E2E', () => {
     it('GET - all users', () => {
         return request.get('/users')
             .then(({ body }) => {
-                assert.equal(body[0].name, user1.name);
-                assert.equal(body[1].name, user2.name);
+                assert.equal(body[0].name, 'mr. foo bar');
+                assert.equal(body[1].name, 'mr. food bard');
             });
     });
 
