@@ -57,6 +57,16 @@ describe('Song Aggregation', () => {
         genre: ['Rock']
     };
 
+    const postSongs = song => {
+        song.artist._id = artist1._id;
+        return request.post('/songs')
+            .set('Authorization', user1.token)
+            .send(song)
+            .then(({ body }) => {
+                song = body;
+            });
+    };
+
     before(() => {
         return request
             .post('/auth/signup')
@@ -76,55 +86,11 @@ describe('Song Aggregation', () => {
             });
     });
 
-    before(() => {
-        song1.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song1)
-            .then(({ body }) => {
-                song1 = body;
-            });
-    });
-
-    before(() => {
-        song2.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song2)
-            .then(({ body }) => {
-                song2 = body;
-            });
-    });
-
-    before(() => {
-        song3.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song3)
-            .then(({ body }) => {
-                song3 = body;
-            });
-    });
-
-    before(() => {
-        song4.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song4)
-            .then(({ body }) => {
-                song4 = body;
-            });
-    });
-
-    before(() => {
-        song5.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song5)
-            .then(({ body }) => {
-                song5 = body;
-            });
-    });
+    before(() => postSongs(song1));
+    before(() => postSongs(song2));
+    before(() => postSongs(song3));
+    before(() => postSongs(song4));
+    before(() => postSongs(song5));
 
     it('Top Songs', () => {
         return request.get('/songs/top')
