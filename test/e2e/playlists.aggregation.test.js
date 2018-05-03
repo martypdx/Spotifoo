@@ -11,10 +11,10 @@ describe('Playlist Aggregation', () => {
     before(() => dropCollection('artists'));
     before(() => dropCollection('users'));
 
-    const checkOk = res => {
-        if (!res.ok) throw res.error;
-        return res;
-    };
+    // const checkOk = res => {
+    //     if (!res.ok) throw res.error;
+    //     return res;
+    // };
 
     let song1 = {
         title: 'song1',
@@ -38,7 +38,7 @@ describe('Playlist Aggregation', () => {
         name: 'playlist1',
         songs: [],
         user: {},
-        playlistCount: 
+        playlistCount: 2
     };
 
 
@@ -137,12 +137,72 @@ describe('Playlist Aggregation', () => {
     });
 
     before(() => {
+        playlist1.user = user1._id;
+        return request.post('/playlists')
+            .set('Authorization', user1.token)
+            .send(playlist1)
+            .then(({ body }) => {
+                playlist1 = body;
+            });
+    });
+
+    before(() => {
         playlist2.user = user1._id;
         return request.post('/playlists')
             .set('Authorization', user1.token)
             .send(playlist2)
             .then(({ body }) => {
                 playlist2 = body;
+            });
+    });
+
+    before(() => {
+        playlist3.user = user1._id;
+        return request.post('/playlists')
+            .set('Authorization', user1.token)
+            .send(playlist3)
+            .then(({ body }) => {
+                playlist3 = body;
+            });
+    });
+
+    before(() => {
+        playlist4.user = user1._id;
+        return request.post('/playlists')
+            .set('Authorization', user1.token)
+            .send(playlist4)
+            .then(({ body }) => {
+                playlist4 = body;
+            });
+    });
+
+    before(() => {
+        playlist5.user = user1._id;
+        return request.post('/playlists')
+            .set('Authorization', user1.token)
+            .send(playlist5)
+            .then(({ body }) => {
+                playlist5 = body;
+            });
+    });
+
+    before(() => {
+        playlist6.user = user1._id;
+        return request.post('/playlists')
+            .set('Authorization', user1.token)
+            .send(playlist6)
+            .then(({ body }) => {
+                playlist6 = body;
+            });
+    });
+
+    before(() => {
+        playlist7.user = user1._id;
+        return request.post('/playlists')
+            .set('Authorization', user1.token)
+            .send(playlist7)
+            .then(({ body }) => {
+                playlist7 = body;
             });
     });
 
