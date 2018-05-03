@@ -11,29 +11,6 @@ describe('Playlist Aggregation', () => {
     before(() => dropCollection('artists'));
     before(() => dropCollection('users'));
 
-    // const checkOk = res => {
-    //     if (!res.ok) throw res.error;
-    //     return res;
-    // };
-
-    let song1 = {
-        title: 'song1',
-        artist: {},
-        length: '3:03',
-        album: {},
-        playcount: 3
-    };
-
-    let artist1 = {
-        name: 'artist1',
-        genre: ['Rock']
-    };
-
-    let album1 = {
-        title: 'album1',
-        length: '2:02'
-    };
-
     let playlist1 = {
         name: 'playlist1',
         songs: [],
@@ -91,13 +68,6 @@ describe('Playlist Aggregation', () => {
         name: 'Mr. Foo Bar'
     };
 
-    let user2 = {
-        email: 'boo@bar.com',
-        password: 'boodbar',
-        role: 'user',
-        name: 'Mr. Bood Bar'
-    };
-
     before(() => {
         return request
             .post('/auth/signup')
@@ -108,114 +78,23 @@ describe('Playlist Aggregation', () => {
             });
     });
 
-    before(() => {
-        return request
-            .post('/auth/signup')
-            .send(user2)
-            .then(({ body }) => {
-                user2._id = verify(body.token).id;
-                user2.token = body.token;
-            });
-    });
-
-    before(() => {
-        return request.post('/albums')
-            .set('Authorization', user1.token)
-            .send(album1)
-            .then(({ body }) => {
-                album1 = body;
-            });
-    });
-
-    before(() => {
-        return request.post('/artists')
-            .set('Authorization', user1.token)
-            .send(artist1)
-            .then(({ body }) => {
-                artist1 = body;
-            });
-    });
-
-    before(() => {
-        playlist1.user = user1._id;
+    const postPlaylist = playlist => {
+        playlist.user = user1._id;
         return request.post('/playlists')
             .set('Authorization', user1.token)
-            .send(playlist1)
+            .send(playlist)
             .then(({ body }) => {
-                playlist1 = body;
+                playlist = body;
             });
-    });
+    };
 
-    before(() => {
-        playlist2.user = user1._id;
-        return request.post('/playlists')
-            .set('Authorization', user1.token)
-            .send(playlist2)
-            .then(({ body }) => {
-                playlist2 = body;
-            });
-    });
-
-    before(() => {
-        playlist3.user = user1._id;
-        return request.post('/playlists')
-            .set('Authorization', user1.token)
-            .send(playlist3)
-            .then(({ body }) => {
-                playlist3 = body;
-            });
-    });
-
-    before(() => {
-        playlist4.user = user1._id;
-        return request.post('/playlists')
-            .set('Authorization', user1.token)
-            .send(playlist4)
-            .then(({ body }) => {
-                playlist4 = body;
-            });
-    });
-
-    before(() => {
-        playlist5.user = user1._id;
-        return request.post('/playlists')
-            .set('Authorization', user1.token)
-            .send(playlist5)
-            .then(({ body }) => {
-                playlist5 = body;
-            });
-    });
-
-    before(() => {
-        playlist6.user = user1._id;
-        return request.post('/playlists')
-            .set('Authorization', user1.token)
-            .send(playlist6)
-            .then(({ body }) => {
-                playlist6 = body;
-            });
-    });
-
-    before(() => {
-        playlist7.user = user1._id;
-        return request.post('/playlists')
-            .set('Authorization', user1.token)
-            .send(playlist7)
-            .then(({ body }) => {
-                playlist7 = body;
-            });
-    });
-
-    before(() => {
-        song1.artist._id = artist1._id;
-        song1.album._id = album1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song1)
-            .then(({ body }) => {
-                song1 = body;
-            });
-    });
+    before(() => postPlaylist(playlist1));
+    before(() => postPlaylist(playlist2));
+    before(() => postPlaylist(playlist3));
+    before(() => postPlaylist(playlist4));
+    before(() => postPlaylist(playlist5));
+    before(() => postPlaylist(playlist6));
+    before(() => postPlaylist(playlist7));
 
     it('Sorts playlist by Playcount', () => {
         return request.get('/playlists/top')
@@ -223,14 +102,5 @@ describe('Playlist Aggregation', () => {
                 assert.equal(response.body[0].Name, 'playlist7');
                 assert.equal(response.body[6].Name, 'playlist6');
             });
-
-
     });
-
-
-
-
-
-
-
 });
