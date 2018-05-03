@@ -18,13 +18,6 @@ describe('songs api', () => {
         name: 'Mr. Foo Bar'
     };
 
-    // let song2 = {
-    //     title: 'song2',
-    //     artist: {},
-    //     length: '4:05',
-    //     placount: 4
-    // };
-
     let song1 = {
         title: 'song1',
         artist: {},
@@ -47,10 +40,6 @@ describe('songs api', () => {
         if(!res.ok) throw res.error;
         return res;
     };
-
-    // before(() => {
-    //     return request.post()
-    // });
 
     before(() => {
         return request
@@ -174,5 +163,4 @@ describe('songs api', () => {
                 assert.match(response.body.error, new RegExp(song1._id));
             });
     });
-
 });
