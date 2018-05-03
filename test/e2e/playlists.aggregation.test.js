@@ -65,7 +65,21 @@ describe('Playlist Aggregation', () => {
         email: 'foo@bar.com',
         password: 'foobar',
         role: 'admin',
-        name: 'Mr. Foo Bar'
+        name: 'foo Bar'
+    };
+
+    let user2 = {
+        email: 'boot@bar.com',
+        password: 'bootbar',
+        role: 'admin',
+        name: 'Boot Bar'
+    };
+
+    let user3 = {
+        email: 'doot@bar.com',
+        password: 'dootbar',
+        role: 'admin',
+        name: 'doot Bar'
     };
 
     before(() => {
@@ -78,29 +92,57 @@ describe('Playlist Aggregation', () => {
             });
     });
 
-    const postPlaylist = playlist => {
-        playlist.user = user1._id;
+    before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user2)
+            .then(({ body }) => {
+                user2._id = verify(body.token).id;
+                user2.token = body.token;
+            });
+    });
+
+    before(() => {
+        return request
+            .post('/auth/signup')
+            .send(user3)
+            .then(({ body }) => {
+                user3._id = verify(body.token).id;
+                user3.token = body.token;
+            });
+    });
+
+    const postPlaylist = (playlist, user) => {
+        playlist.user = user._id;
         return request.post('/playlists')
-            .set('Authorization', user1.token)
+            .set('Authorization', user.token)
             .send(playlist)
             .then(({ body }) => {
                 playlist = body;
             });
     };
 
-    before(() => postPlaylist(playlist1));
-    before(() => postPlaylist(playlist2));
-    before(() => postPlaylist(playlist3));
-    before(() => postPlaylist(playlist4));
-    before(() => postPlaylist(playlist5));
-    before(() => postPlaylist(playlist6));
-    before(() => postPlaylist(playlist7));
+    before(() => postPlaylist(playlist1, user1));
+    before(() => postPlaylist(playlist2, user1));
+    before(() => postPlaylist(playlist3, user1));
+    before(() => postPlaylist(playlist4, user2));
+    before(() => postPlaylist(playlist5, user2));
+    before(() => postPlaylist(playlist6, user3));
+    before(() => postPlaylist(playlist7, user3));
 
     it('Sorts playlist by Playcount', () => {
         return request.get('/playlists/top')
             .then(response => {
                 assert.equal(response.body[0].Name, 'playlist7');
                 assert.equal(response.body[6].Name, 'playlist6');
+            });
+    });
+
+    it('Sorts playlist by Playcount', () => {
+        return request.get(`/playlists/user/${user1._id}`)
+            .then(response => {
+                assert.equal(response.body[0].Name, 'playlist4');
+                assert.equal(response.body[6].Name, 'playlist1');
             });
     });
 });
