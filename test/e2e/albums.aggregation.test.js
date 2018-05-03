@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-describe('Song Aggregation', () => {
+describe.only('Albums aggregation tests', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('albums'));
@@ -57,6 +57,32 @@ describe('Song Aggregation', () => {
         genre: ['Rock']
     };
 
+    let album1 = {
+        title: 'a',
+        length: '50:03',
+        tracklist: []
+    };
+    let album2 = {
+        title: 'e',
+        length: '50:03',
+        tracklist: []
+    };
+    let album3 = {
+        title: 'c',
+        length: '50:03',
+        tracklist: []
+    };
+    let album4= {
+        title: 'y',
+        length: '50:03',
+        tracklist: []
+    };
+    let album5= {
+        title: 'z',
+        length: '50:03',
+        tracklist: []
+    };
+
     before(() => {
         return request
             .post('/auth/signup')
@@ -67,6 +93,26 @@ describe('Song Aggregation', () => {
             });
     });
 
+    const postSongs = song => {
+        song.artist._id = artist1._id;
+        return request.post('/songs')
+            .set('Authorization', user1.token)
+            .send(song)
+            .then(({ body }) => {
+                song = body;
+            });
+    };
+
+    const postAlbums = (album, song)  => {
+        album.tracklist.push(song._id);
+        return request.post('/albums')
+            .set('Authorization', user1.token)
+            .send(album)
+            .then(({ body }) => {
+                album = body;
+            });
+    };
+
     before(() => {
         return request.post('/artists')
             .set('Authorization', user1.token)
@@ -76,69 +122,23 @@ describe('Song Aggregation', () => {
             });
     });
 
-    before(() => {
-        song1.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song1)
-            .then(({ body }) => {
-                song1 = body;
-            });
-    });
+    before(() => postSongs(song1));
+    before(() => postSongs(song2));
+    before(() => postSongs(song3));
+    before(() => postSongs(song4));
+    before(() => postSongs(song5));
 
-    before(() => {
-        song2.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song2)
-            .then(({ body }) => {
-                song2 = body;
-            });
-    });
+    before(() => postAlbums(album1, song1));
+    before(() => postAlbums(album2, song2));
+    before(() => postAlbums(album3, song3));
+    before(() => postAlbums(album4, song4));
+    before(() => postAlbums(album5, song5));
 
-    before(() => {
-        song3.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song3)
-            .then(({ body }) => {
-                song3 = body;
-            });
-    });
-
-    before(() => {
-        song4.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song4)
-            .then(({ body }) => {
-                song4 = body;
-            });
-    });
-
-    before(() => {
-        song5.artist._id = artist1._id;
-        return request.post('/songs')
-            .set('Authorization', user1.token)
-            .send(song5)
-            .then(({ body }) => {
-                song5 = body;
-            });
-    });
-
-    it('Top Songs', () => {
-        return request.get('/songs/top')
+    it('Albums by aplh', () => {
+        return request.get('/albums/alph')
             .then(response => {
-                assert.equal(response.body[0].Title, 'song5');
-                assert.equal(response.body[4].Title, 'song2');
-            });
-    });
-
-    it('Songs by aplh', () => {
-        return request.get('/songs/alph')
-            .then(response => {
-                assert.equal(response.body[0].Title, 'A');
-                assert.equal(response.body[4].Title, 'x');
+                assert.equal(response.body[0].Title, 'a');
+                assert.equal(response.body[4].Title, 'z');
             });
     });
 
