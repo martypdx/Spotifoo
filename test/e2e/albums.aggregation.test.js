@@ -72,12 +72,12 @@ describe('Albums aggregation tests', () => {
         length: '50:03',
         tracklist: []
     };
-    let album4= {
+    let album4 = {
         title: 'y',
         length: '50:03',
         tracklist: []
     };
-    let album5= {
+    let album5 = {
         title: 'z',
         length: '50:03',
         tracklist: []
