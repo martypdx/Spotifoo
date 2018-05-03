@@ -33,6 +33,19 @@ describe('Album E2E route test', () => {
         albums: [],
         genre: 'Alternative'
     };
+
+    let album1 = {
+        title: 'Synesthetica',
+        length: '40min',
+        tracklist: []
+    };
+
+    let album2 = {
+        title: 'Truth is a Beautiful Thing',
+        length: '1hour 19min',
+        tracklist: []
+    };
+
     before(() => {
         return request 
             .post('/auth/signup')
@@ -52,18 +65,6 @@ describe('Album E2E route test', () => {
 
             });
     });
-
-    let album1 = {
-        title: 'Synesthetica',
-        length: '40min',
-        tracklist: []
-    };
-
-    let album2 = {
-        title: 'Truth is a Beautiful Thing',
-        length: '1hour 19min',
-        tracklist: []
-    };
 
     before(() => {
         song1.artist._id = artist1._id;
