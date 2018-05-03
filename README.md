@@ -9,7 +9,7 @@ Our app uses NodeJS packages, all dependencies are listed in our package.json so
 
 Commands to install all dependencies in git-bash: npm i
 
-#PREQUISITES FOR APP: Nodejs, Express, Mongoose, bcryptjs, morgan, and dotenv.#
+**PREQUISITES FOR APP:** Nodejs, Express, Mongoose, bcryptjs, morgan, and dotenv.
 
 **TEST DRIVEN DEVELOPMENT (TDD):** The process for creating this app was done using the development technique of Test-Driven-Development. What that entails is alot of developers bashing their heads against a wall in response to writing failing tests (But far less head bashing than if they had forgone TDD). TDD dictates that tests should be written BEFORE writing functional code, this means for every important function you write you should start out creating a test with the purpose of testing that function. TDD helps navigate the unresponsive waters of back-end development where there is little feedback and even less help to know when exactly your code went astray. Using technologies like Mocha, chai, and chai-http helped us write expressive failing tests that not only provide set goals that need to be met (through a passing test), but also forces the developer to think about what they want their function's outcome to be. TDD is a testing technique as well as a brainstorming technique, understanding what you want your code to do will hone your focus and make you write more direct code. 
 One thing We've learned from server-side programming is that ERRORS ARE GOOD!
