@@ -220,8 +220,8 @@ describe('Playlist Aggregation', () => {
     it('Sorts playlist by Playcount', () => {
         return request.get('/playlists/top')
             .then(response => {
-                assert.equal(response.body[0].name, 'playlist7');
-                assert.equal(response.body[6].name, 'playlist6');
+                assert.equal(response.body[0].Name, 'playlist7');
+                assert.equal(response.body[6].Name, 'playlist6');
             });
 
 
