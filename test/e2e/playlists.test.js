@@ -192,6 +192,15 @@ describe('Playlist API', () => {
             });
     });
 
+    it('iterates playcount of playlist by one', () => {
+        return request.get(`/playlists/play/${playlist1._id}`)
+            .set('Authorization', user1.token)
+            .then(({ body }) => {
+                assert.equal(body.playlistCount, 5);
+            });
+
+    });
+
     it('deletes a playlist - MUST BE SAME USER', () => {
         return request.delete(`/playlists/${user1._id}/${playlist2._id}`)
             .set('Authorization', user1.token)
