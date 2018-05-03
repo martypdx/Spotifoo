@@ -49,6 +49,15 @@ body {
     display: table;
     background-attachment: fixed;
 }
+a {
+    color: inherit;
+}
+
+#disclaimer {
+    float: right;
+    margin-right: 20px;
+    margin-top: 50px;
+}
 
 h1 {
     font-family: 'Montserrat', sans-serif;
