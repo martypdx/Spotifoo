@@ -66,6 +66,9 @@ ROUTES:
 /playlists/top
     .orders playlists by playCount, starting from most played to least played.
 
+/playlists/user
+    .orders playlist by users alphabetically.
+
 /plSongId/
     .route allows for posting and deletion of playlist songs by their ID.
 
