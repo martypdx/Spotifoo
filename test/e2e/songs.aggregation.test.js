@@ -18,37 +18,37 @@ describe.only('Song Aggregation', () => {
     };
 
     let song1 = {
-        title: 'song1',
+        title: 'A',
         artist: {},
-        length: '3:03',
+        length: '4:03',
         playcount: 35
     };
 
     let song2 = {
         title: 'song2',
         artist: {},
-        length: '3:03',
+        length: '6:03',
         playcount: 3
     };
 
     let song3 = {
-        title: 'song3',
+        title: 'x',
         artist: {},
         length: '3:03',
         playcount: 10
     };
 
     let song4 = {
-        title: 'song4',
+        title: 's',
         artist: {},
-        length: '3:03',
+        length: '7:03',
         playcount: 33
     };
 
     let song5 = {
         title: 'song5',
         artist: {},
-        length: '3:03',
+        length: '1:55',
         playcount: 100
     };
 
@@ -131,6 +131,14 @@ describe.only('Song Aggregation', () => {
             .then(response => {
                 assert.equal(response.body[0].Title, 'song5');
                 assert.equal(response.body[4].Title, 'song2');
+            });
+    });
+
+    it('Songs by aplh', () => {
+        return request.get('/songs/alph')
+            .then(response => {
+                assert.equal(response.body[0].Title, 'A');
+                assert.equal(response.body[4].Title, 'x');
             });
     });
 
