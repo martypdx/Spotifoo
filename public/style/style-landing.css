@@ -49,6 +49,7 @@ body {
     display: table;
     background-attachment: fixed;
 }
+
 a {
     color: inherit;
 }
@@ -105,26 +106,50 @@ aside h3:hover {
     opacity: 0.7;
     color: #d41f1f;
     transform: inherit;
+    transition: inherit;
     -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.05) slow;
+    -o-transform: scale(1.05) slow;
+    -ms-transform: scale(1.05) slow;
+    -webkit-transform: scale(1.1);
+    -webkit-transition: transform 0.25s ease-in-out;
 }
 
 aside li:hover {
     opacity: 0.7;
     color: #d41f1f;
     transform: inherit;
+    transition-delay: 1s;
+    transition: inherit;
+    -moz-transform: scale(1.05) slow;
+    -o-transform: scale(1.05) slow;
+    -ms-transform: scale(1.05) slow;
     -webkit-transform: scale(1.1);
+    -webkit-transition: transform 0.25s ease-in-out;
 }
 
 section h3:hover {
     opacity: 0.7;
     color: #d41f1f;
     transform: inherit;
+    transition: inherit;
     -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.05) slow;
+    -o-transform: scale(1.05) slow;
+    -ms-transform: scale(1.05) slow;
+    -webkit-transform: scale(1.1);
+    -webkit-transition: transform 0.25s ease-in-out;
 }
 
 section li:hover {
     opacity: 0.7;
     color: #d41f1f;
     transform: inherit;
+    transition: inherit;
     -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.05) slow;
+    -o-transform: scale(1.05) slow;
+    -ms-transform: scale(1.05) slow;
+    -webkit-transform: scale(1.1);
+    -webkit-transition: transform 0.25s ease-in-out;
 }
