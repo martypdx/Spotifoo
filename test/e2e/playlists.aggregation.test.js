@@ -139,7 +139,7 @@ describe('Playlist Aggregation', () => {
     });
 
     it('Sorts playlist by Playcount', () => {
-        return request.get(`/playlists/user/${user1._id}`)
+        return request.get('/playlists/user')
             .then(response => {
                 assert.equal(response.body[0].Name, 'playlist4');
                 assert.equal(response.body[6].Name, 'playlist1');
