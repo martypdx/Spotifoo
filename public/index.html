@@ -23,8 +23,9 @@
         </div>
         <div id="box3">
             <h1>Route Testing</h1>
+                    <p id = 'disclaimer'>* underlines are clickable</p>
                     <section>
-                        <h3>/users/</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/users/">/users/</a></h3>
                         <ul>
                             <li>/users/ gets all users currently signed up in our database</li>
                         </ul>
@@ -33,7 +34,7 @@
                             <li>/users/id/ returns a particular user by their id</li>
                         </ul>
                     
-                        <h3>/songs/</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/songs/">/songs/</a></h3>
                         <ul>
                             <li>/songs/ route is our smallest point of entry.</li>
                             <li>/songs/ will get you an array object of all songs currently listed in Spotifoo</li>
@@ -42,15 +43,15 @@
                         <ul>
                             <li>/songs/id/ get a select song with it's mongodb generated id.</li>
                         </ul>
-                        <h3>/songs/top</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/songs/top/">/songs/top</a></h3>
                         <ul>
                             <li>Most played songs appear first</li>
                         </ul>
-                        <h3>/songs/alph</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/songs/alph/">/songs/alph</a></h3>
                         <ul>
                             <li>songs appear in alphabetical order.</li>
                         </ul>
-                        <h3>/artists/</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/artists/">/artists/</a></h3>
                         <ul>
                             <li>/artists/ route gets all artists in Spotifoo's database including albums and genre</li>
                         </ul>
@@ -58,17 +59,17 @@
                         <ul>
                             <li>/artists/id/ specific artist by id.</li>
                         </ul>
-                        <h3>/artists/alph</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/artists/alph/">/artists/alph</a></h3>
                         <ul>
                             <li>all artists sorted alphabetically</li>
                         </ul>
                     </section>
                     <aside>
-                        <h3>/artists/topGenres</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/artists/">/artists/topGenres</a></h3>
                         <ul>
                             <li>top genres by number of artists</li>
                         </ul>
-                        <h3>/albums/</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/albums/">/albums/</a></h3>
                         <ul>
                             <li>/albums/ shows all albums in our database, including song tracks and song length.</li>
                         </ul>
@@ -77,11 +78,11 @@
                         <ul>
                             <li>/albums/id/ shows specific album with matching Spotifoo id.</li>
                         </ul>
-                        <h3>/albums/alph</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/albums/alph/">/albums/alph</a></h3>
                         <ul>
                             <li>orders album list alphabetically</li>
                         </ul>
-                        <h3>/playlists/</h3>
+                        <h3><a href="https://spotifoo.herokuapp.com/playlists/">/playlists/</a></h3>
                         <ul>
                             <li>the playlists route gets all playlists</li>
                         </ul>
@@ -89,7 +90,11 @@
                         <ul>
                             <li>the playlists id route get playlist by Id and to delte playlist</li>
                         </ul>
-                        <h3>/playlists/top</h3>
+                        <h3>/playlists/user/</h3>
+                        <ul>
+                            <li>orderes playlists by user</li>
+                        </ul>
+                        <h3><a href="https://spotifoo.herokuapp.com/playlists/top/">/playlists/top</a></h3>
                         <ul>
                             <li>orders playlsits by playCount, starting from most played to least played.</li>
                         </ul>
