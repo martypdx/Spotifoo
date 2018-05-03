@@ -115,6 +115,14 @@ describe.only('Artists Aggregation', () => {
             });
     });
 
+    it('Artists Alphabetically', () => {
+        return request.get('/artists/alph')
+            .then(({ body }) => {
+                assert.equal(body[0].Name, 'ASAP Rocky');
+                assert.equal(body[9].Name, 'Preoccupations');
+            });
+    });
+
    
 
 
