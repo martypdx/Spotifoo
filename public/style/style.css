@@ -1,8 +1,11 @@
 /*logo color keys: 290404*/
 
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Titan+One');
 @import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Poppins');
 body {
-    background-image: url('../images/SpotifooLOGO.png');
+    background-image: url("/images/SpotifooLOGO.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     /* background-color: tan; */
 }
 

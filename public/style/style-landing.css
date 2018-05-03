@@ -1,0 +1,25 @@
+body {
+    background-image: url("../images/Landing page.png");
+    background-size: cover;
+}
+
+nav {
+    height: 40px;
+    width: auto;
+    letter-spacing: 3px;
+}
+
+nav ul li {
+    list-style: none;
+    text-decoration: none;
+    display: inline-block;
+    /* padding: 12px; */
+    /* padding-right: 20px; */
+    margin-left: 20px;
+    color: #29445f;
+}
+
+li:hover {
+    opacity: 0.7;
+    border-bottom: 0.5px solid red;
+}

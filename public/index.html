@@ -3,8 +3,8 @@
 
 <head>
     <title>Spotifoo Home Page</title>
-    <link rel="icon" type="image/png" href="images/SpotifooLOGO.1.gif">
-    <link rel="stylesheet" type="text/css" href="./style/style.css">
+    <link rel="icon" type="image/gif" href="/images/SpotifooLOGO.1.gif">
+    <link rel="stylesheet" type="text/css" href="/style/style.css">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     <section>
         <h3>/users/</h3>
         <ul>
-            <li>/users/ gets all users currently signed up in our database</li>
+            <li>/users/ gets all users currently siågned up in our database</li>
         </ul>
         <h3>/users/id</h3>
         <ul>
@@ -32,8 +32,6 @@
         <ul>
             <li>/songs/id/ get a select song with it's mongodb generated id.</li>
         </ul>
-    </section>
-    <aside>
         <h3>/artists/</h3>
         <ul>
             <li>/artists/ route gets all artists in Spotifoo's database including albums and genre</li>
@@ -43,6 +41,8 @@
             <li>/artists/id/ specific artist by id.</li>
         </ul>
 
+    </section>
+    <aside>
         <h3>/albums/</h3>
         <ul>
             <li>/albums/ shows all albums in our database, including song tracks and song length.</li>
@@ -52,6 +52,24 @@
         <ul>
             <li>/albums/id/ shows specific album with matching Spotifoo id.</li>
         </ul>
+        <h3>/playlists/</h3>
+        <ul>
+            <li>the playlists route gets all playlists</li>
+        </ul>
+        <h3>/playlists/id</h3>
+        <ul>
+            <li>the playlists id route get playlist by Id and to delte playlist</li>
+        </ul>
+        <h3>/plSongId/</h3>
+        <ul>
+            <li>route allows for posting and deletion of playlist songs by their ID.</li>
+        </ul>
+
+        <h3>/auth/</h3>
+        <ul>
+            <li>our authentication wrote houses our /signup /signin and /verify routes which autheticate users</li>
+        </ul>
+
     </aside>
 </body>
 
