@@ -15,7 +15,7 @@ TEST DRIVEN DEVELOPMENT (TDD): The process for creating this app was done using 
 One thing We've learned from server-side programming is that ERRORS ARE GOOD!
 
 DEPLOYMENT: We've published this API on the popular deployment site Heroku (https://spotifoo.herokuapp.com/). 
-You can interact with the current database using the routes listed on our site (all you need to do is append those route names after the sites url), to get feedback from our database and server. Using our routes you'll get objects back containing the information from our database specific by which route you visit. I'll list the routes below!
+You can interact with the current database using the routes listed on our site (all you need to do is append those route names after the sites url), to get feedback from our database and server. Using our routes you'll get objects back containing the information from our database specific to whichever route you visit. I'll list the routes below!
 
 ROUTES:
 /users/
@@ -42,6 +42,12 @@ ROUTES:
 /aritsts/id
     ./artists/id/ specific artist by id.
 
+/artists/alph
+    .all artists sorted alphabetically.    
+
+/artists/topGenres
+    .top genres by number of artists.
+
 /albums/
     ./albums/ shows all albums in our database, including song tracks and song length.
 
@@ -66,14 +72,14 @@ ROUTES:
 /auth/
     .our authentication route houses our /signup /signin and /verify routes which autheticate users.                         
 
-Authors:
+AUTHORS:
 Ryan Manro (https://github.com/rmanro)
 Steele Waltson (https://github.com/SteeleWalston)
 Jeff Lonergan (https://github.com/J3ffcon1)
 
 Spotifoo github: https://github.com/MAGIC8BALLs/Spotifoo
 
-Contributors:
+CONTRIBUTORS:
 
 Thankyou to the talented photographers at unsplash.com.(photos for our front-end site).
 
