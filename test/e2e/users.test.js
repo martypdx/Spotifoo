@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-describe.only('User E2E', () => {
+describe('User E2E', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('playlists'));
