@@ -4,7 +4,7 @@ const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
 
-describe.only('Playlist API', () => {
+describe('Playlist API', () => {
 
     before(() => dropCollection('songs'));
     before(() => dropCollection('playlists'));
@@ -285,7 +285,15 @@ describe.only('Playlist API', () => {
                 });
         });
 
-        it('Removes a song', () => {
+        it('Attempts to remove a song - DIFFERENT USER', () => {
+            return request.delete(`/playlists/${playlist1._id}/pl-songs/${song2._id}`)
+                .set('Authorization', user2.token)
+                .then(res => {
+                    assert.equal(res.status, 403);
+                });
+        });
+
+        it('Removes a song - SAME USER', () => {
             return request.delete(`/playlists/${playlist1._id}/pl-songs/${song2._id}`)
                 .set('Authorization', user1.token)
                 .then(checkOk)
@@ -297,6 +305,4 @@ describe.only('Playlist API', () => {
                 });
         });
     });
-
-
 });
