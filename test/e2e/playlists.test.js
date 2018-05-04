@@ -172,7 +172,7 @@ describe('Playlist API', () => {
                         length: song1.length,
                         playcount: song1.playcount
                     }],
-                    user: { _id: user1._id, name: user1.name },
+                    user: { _id: user1._id, name: 'mr. foo bar' },
                     playlistCount: playlist1.playlistCount
                 });
             });    
@@ -212,6 +212,15 @@ describe('Playlist API', () => {
             .then(res => {
                 assert.equal(res.status, 200);
             });
+    });
+
+    it('iterates playcount of playlist by one', () => {
+        return request.get(`/playlists/play/${playlist1._id}`)
+            .set('Authorization', user1.token)
+            .then(({ body }) => {
+                assert.equal(body.playlistCount, 5);
+            });
+
     });
 
     it('deletes a playlist - MUST BE SAME USER', () => {
