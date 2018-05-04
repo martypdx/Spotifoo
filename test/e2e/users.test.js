@@ -182,7 +182,7 @@ describe('User E2E', () => {
     });
 
     
-    it('Add Another User to Following List', () => {
+    it('Add Another User to Following List - SAME USER', () => {
         return request.post(`/users/${user1._id}/following`)
             .set('Authorization', user1.token)
             .send(followerUser)
@@ -190,7 +190,15 @@ describe('User E2E', () => {
             .then(({ body }) => {
                 assert.equal(body, followerUser._id);
             });
-            
+    });
+
+    it('Attempt To Add Another User to Following List - NOT SAME USER', () => {
+        return request.post(`/users/${user1._id}/following`)
+            .set('Authorization', user2.token)
+            .send(followerUser)
+            .then(res => {
+                assert.equal(res.status, 403);
+            });
     });
 
     it('Removes a User from Following List', () => {
@@ -203,6 +211,13 @@ describe('User E2E', () => {
             .then(({ body }) => {
                 assert.deepEqual(body.following, []);
             });
+    });
 
+    it('Attempts to Remove a User from Following List - NOT SAME USER', () => {
+        return request.delete(`/users/${user1._id}/following/${followerUser._id}`)
+            .set('Authorization', user2.token)
+            .then(res => {
+                assert.equal(res.status, 403);
+            });
     });
 }); 
