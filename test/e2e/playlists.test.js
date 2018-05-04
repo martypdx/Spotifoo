@@ -122,7 +122,7 @@ describe.only('Playlist API', () => {
             });
     });
 
-    it('saves a playlist - MUST BE USER', () => {
+    it('saves a playlist - MUST BE SAME USER', () => {
         playlist1.songs.push(song1._id);
         playlist1.user = user1._id;
         return request.post('/playlists')
@@ -136,6 +136,15 @@ describe.only('Playlist API', () => {
                 assert.equal(body.name, playlist1.name);
                 assert.equal(body.user, user1._id);
                 playlist1 = body;
+            });
+    });
+
+    it('saves a playlist - MUST BE SAME USER- SHOULD FAIL', () => {
+        return request.post('/playlists')
+            .set('Authorization', user2.token)
+            .send(playlist1)
+            .then(res => {
+                assert.equal(res.status, 403);
             });
     });
 
@@ -217,7 +226,7 @@ describe.only('Playlist API', () => {
         return request.delete(`/playlists/${playlist1._id}`)
             .set('Authorization', user2.token)
             .then(res => {
-                assert.equal(res.status, 404);
+                assert.equal(res.status, 403);
             });
     });
 
