@@ -1,10 +1,10 @@
-#SPOTIFOO# V.1.0.0
+SPOTIFOO V.1.0.0
 
-###-developed by Magic8Ball###
+-developed by Magic8Ball
 
 Description: SPOTIFOO is a music database created using Express, Nodejs, Mongoose, MongoDB and whole lot of JavaScript.This web API collects and aggregates through music playlist data, allowing users to add music and query the data available using our convieniently predefined routes. The purpose of SPOTIFOO is to allow users to add and share music with one another.
 
-##HOW TO GET STARTED:##
+**HOW TO GET STARTED:**
 Our app uses NodeJS packages, all dependencies are listed in our package.json so you'll need to install them if you want to run our Mongo database and our express servers. You must have an up-to-date NodeJS to install our dependencies, which you can find at their site https://nodejs.org/en/download/.     
 
 Commands to install all dependencies in git-bash: npm i
@@ -83,7 +83,7 @@ Spotifoo github: https://github.com/MAGIC8BALLs/Spotifoo
 
 **CONTRIBUTORS:**
 
-Thankyou to the talented photographers at unsplash.com.(photos for our front-end site).
+Photos from Unsplash.com
 
 Daniel Leone - "Poon Hill, Ghose Pani, Nepal"
 Wellington Rodrigues - "Province of Bolzano - South Tyrol, Italy"
