@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-describe('User E2E', () => {
+describe.only('User E2E', () => {
 
     before(() => dropCollection('users'));
     before(() => dropCollection('playlists'));
@@ -183,8 +183,8 @@ describe('User E2E', () => {
             .set('Authorization', user1.token)
             .send(followerUser)
             .then(checkOk)
-            .then(({ body }) => {
-                assert.equal(body, followerUser._id);
+            .then(res => {
+                assert.equal(res.text, `User ${followerUser._id} has been added to the Following list.`);
             });
     });
 
