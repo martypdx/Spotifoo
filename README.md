@@ -87,6 +87,8 @@ Photos from Unsplash.com
 
 Daniel Leone - "Poon Hill, Ghose Pani, Nepal"
 Wellington Rodrigues - "Province of Bolzano - South Tyrol, Italy"
+Luca Bravo - "Giau Pass, Italy"
+Sergey Pesterev - "Baikal ice"
 
 **LICENSE:**
 This project is licensed under the MIT LICENSE - please see our LICENSE.md file.
