@@ -261,7 +261,7 @@ describe.only('Playlist API', () => {
                 });
         });
 
-        it('adds a song to playlist1', () => {
+        it('adds a song to playlist1 - SAME USER', () => {
             return request.post(`/playlists/${playlist1._id}/pl-songs`)
                 .set('Authorization', user1.token)
                 .send(song2)
@@ -269,11 +269,19 @@ describe.only('Playlist API', () => {
                 .then(({ body }) => {
                     song2._id = body;
                     assert.deepEqual(body, song2._id);
-
                     return request.get(`/playlists/${playlist1._id}`);
                 })
                 .then(({ body }) => {
                     assert.equal(body.songs.length, 2);
+                });
+        });
+
+        it('Attempts tp add a song to playlist1 - DIFFERENT USER', () => {
+            return request.post(`/playlists/${playlist1._id}/pl-songs`)
+                .set('Authorization', user2.token)
+                .send(song2)
+                .then(res => {
+                    assert.equal(res.status, 403);
                 });
         });
 

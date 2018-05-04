@@ -127,7 +127,7 @@ describe('User E2E', () => {
         playlist1.songs.push(song1._id);
         playlist1.user = user1._id;
         return request.post('/playlists')
-            .set('Authorization', user2.token)
+            .set('Authorization', user1.token)
             .send(playlist1)
             .then(checkOk)
             .then(({ body }) => {
