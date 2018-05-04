@@ -107,5 +107,4 @@ describe('Song Aggregation', () => {
                 assert.equal(response.body[4].Title, 'x');
             });
     });
-
 });

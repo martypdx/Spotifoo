@@ -141,5 +141,4 @@ describe('Albums aggregation tests', () => {
                 assert.equal(response.body[4].Title, 'z');
             });
     });
-
 });

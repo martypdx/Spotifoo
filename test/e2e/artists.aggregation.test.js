@@ -122,8 +122,4 @@ describe('Artists Aggregation', () => {
                 assert.equal(body[9].Name, 'Preoccupations');
             });
     });
-
-   
-
-
 });

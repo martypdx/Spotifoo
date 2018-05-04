@@ -150,5 +150,4 @@ describe('Album E2E route test', () => {
                 assert.equal(res.status, 404);
             });
     });
-
 });

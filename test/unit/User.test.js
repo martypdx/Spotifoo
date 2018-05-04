@@ -42,5 +42,4 @@ describe('User Model', () => {
         assert.equal(errors.hash.kind, 'required');
         assert.equal(errors.role.kind, 'required');
     });
-
 });

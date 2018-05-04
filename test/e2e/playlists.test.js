@@ -3,7 +3,6 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-
 describe('Playlist API', () => {
 
     before(() => dropCollection('songs'));
@@ -122,7 +121,7 @@ describe('Playlist API', () => {
             });
     });
 
-    it('saves a playlist - MUST BE USER', () => {
+    it('saves a playlist - MUST BE SAME USER', () => {
         playlist1.songs.push(song1._id);
         playlist1.user = user1._id;
         return request.post('/playlists')
@@ -139,10 +138,18 @@ describe('Playlist API', () => {
             });
     });
 
+    it('saves a playlist - MUST BE SAME USER- SHOULD FAIL', () => {
+        return request.post('/playlists')
+            .set('Authorization', user2.token)
+            .send(playlist1)
+            .then(res => {
+                assert.equal(res.status, 403);
+            });
+    });
+
     it('gets all playlists', () => {
         return request.get('/playlists')
             .then(({ body }) => {
-                console.log('BODY', body);
                 assert.equal(body[1].songs[0]._id, song1._id);
             });
     });
@@ -173,22 +180,37 @@ describe('Playlist API', () => {
 
     it('updates a playlists playcount and the songs playcount as well - MUST BE SAME USER', () => {
         playlist1.playlistCount = playlist1.playlistCount + 1;
-        song1.playcount = song1.playcount + 1;
-        return request.put(`/songs/${song1._id}`)
+        return request.put(`/playlists/${playlist1._id}`)
             .set('Authorization', user1.token)
-            .send(song1)
+            .send(playlist1)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, playlist1);
+                return request.get(`/playlists/${playlist1._id}`);
+            })
+            .then(({ body }) => {
+                assert.equal(body.playlistCount, playlist1.playlistCount);
+            });
+    });
+
+    it('Attempts Update of Playlist - NOT SAME USER', () => {
+        return request.put(`/playlists/${playlist1._id}`)
+            .set('Authorization', user2.token)
+            .send(playlist1)
+            .then(res => {
+                assert.equal(res.status, 403);
+            });
+
+    });
+
+    it('deletes a playlist - MUST BE SAME USER - SHOULD NOT DELETE', () => {
+        return request.delete(`/playlists/${playlist2._id}`)
+            .set('Authorization', user2.token)
             .then(() => {
-                return request.put(`/playlists/${playlist1._id}`)
-                    .set('Authorization', user1.token)
-                    .send(playlist1)
-                    .then(checkOk)
-                    .then(({ body }) => {
-                        assert.deepEqual(body, playlist1);
-                        return request.get(`/playlists/${playlist1._id}`);
-                    })
-                    .then(({ body }) => {
-                        assert.equal(body.playlistCount, playlist1.playlistCount);
-                    });
+                return request.get(`/playlists/${playlist2._id}`);
+            })
+            .then(res => {
+                assert.equal(res.status, 200);
             });
     });
 
@@ -202,7 +224,7 @@ describe('Playlist API', () => {
     });
 
     it('deletes a playlist - MUST BE SAME USER', () => {
-        return request.delete(`/playlists/${user1._id}/${playlist2._id}`)
+        return request.delete(`/playlists/${playlist2._id}`)
             .set('Authorization', user1.token)
             .then(() => {
                 return request.get(`/playlists/${playlist2._id}`);
@@ -213,7 +235,7 @@ describe('Playlist API', () => {
     });
 
     it('Tries to delete a playlist - NOT SAME USER', () => {
-        return request.delete(`/playlists/${user1._id}/${playlist1._id}`)
+        return request.delete(`/playlists/${playlist1._id}`)
             .set('Authorization', user2.token)
             .then(res => {
                 assert.equal(res.status, 403);
@@ -247,7 +269,7 @@ describe('Playlist API', () => {
                 });
         });
 
-        it('adds a song to playlist1', () => {
+        it('adds a song to playlist1 - SAME USER', () => {
             return request.post(`/playlists/${playlist1._id}/pl-songs`)
                 .set('Authorization', user1.token)
                 .send(song2)
@@ -255,7 +277,6 @@ describe('Playlist API', () => {
                 .then(({ body }) => {
                     song2._id = body;
                     assert.deepEqual(body, song2._id);
-
                     return request.get(`/playlists/${playlist1._id}`);
                 })
                 .then(({ body }) => {
@@ -263,7 +284,24 @@ describe('Playlist API', () => {
                 });
         });
 
-        it('Removes a song', () => {
+        it('Attempts tp add a song to playlist1 - DIFFERENT USER', () => {
+            return request.post(`/playlists/${playlist1._id}/pl-songs`)
+                .set('Authorization', user2.token)
+                .send(song2)
+                .then(res => {
+                    assert.equal(res.status, 403);
+                });
+        });
+
+        it('Attempts to remove a song - DIFFERENT USER', () => {
+            return request.delete(`/playlists/${playlist1._id}/pl-songs/${song2._id}`)
+                .set('Authorization', user2.token)
+                .then(res => {
+                    assert.equal(res.status, 403);
+                });
+        });
+
+        it('Removes a song - SAME USER', () => {
             return request.delete(`/playlists/${playlist1._id}/pl-songs/${song2._id}`)
                 .set('Authorization', user1.token)
                 .then(checkOk)
@@ -275,6 +313,4 @@ describe('Playlist API', () => {
                 });
         });
     });
-
-
 });

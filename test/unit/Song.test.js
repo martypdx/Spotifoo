@@ -25,5 +25,4 @@ describe('Song model', () => {
         assert.equal(errors.title.kind, 'required');
         assert.equal(errors.length.kind, 'required');
     });
-
 });
