@@ -24,5 +24,4 @@ describe('Playlist model', () => {
         const errors = getErrors(playlist.validateSync(), 1);
         assert.equal(errors.name.kind, 'required');
     });
-
 });

@@ -25,5 +25,4 @@ describe('Artist Unit Test', () => {
         assert.equal(errors.name.kind, 'required');
         assert.equal(errors.genre.kind, 'required');
     });
-
 });

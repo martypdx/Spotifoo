@@ -59,8 +59,6 @@ describe('User E2E', () => {
         playlistCount: 3
     };
 
-    
-
     before(() => {
         return request
             .post('/auth/signup')
@@ -81,8 +79,6 @@ describe('User E2E', () => {
                 followerUser = { _id: user2._id };
             });
     });
-
-    
 
     before(() => {
         return request

@@ -3,7 +3,6 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const { verify } = require('../../lib/util/token-service');
 
-
 describe('Artist E2E Test', () =>{
 
     before(() => dropCollection('users'));
@@ -99,7 +98,6 @@ describe('Artist E2E Test', () =>{
             .then(({ body }) => {
                 assert.equal(body.albums[0].title, album1.title);
             });
-    
     });
 
     it('get all artists', () => {
@@ -119,7 +117,6 @@ describe('Artist E2E Test', () =>{
 
     it('update an artist', () => {
         artist1.name = 'Bob Marley';
-
         return request.put(`/artists/${artist1._id}`)
             .set('Authorization', user1.token)
             .send(artist1)
@@ -131,7 +128,6 @@ describe('Artist E2E Test', () =>{
             .then(({ body }) => {
                 assert.equal(body.name, artist1.name);
             });
-
     });
 
     it('Deletes an artist by id', () => {
@@ -143,9 +139,5 @@ describe('Artist E2E Test', () =>{
             .then(res => {
                 assert.equal(res.status, 404);
             });
-
     });
-
-
-
 });
