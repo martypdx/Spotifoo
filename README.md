@@ -1,5 +1,7 @@
 SPOTIFOO V.1.0.0
 
+// initial commit
+
 -developed by Magic8Ball
 
 Description: SPOTIFOO is a music database created using Express, Nodejs, Mongoose, MongoDB and whole lot of JavaScript.This web API collects and aggregates through music playlist data, allowing users to add music and query the data available using our conveniently predefined routes. The purpose of SPOTIFOO is to allow users to add and share music with one another.
@@ -17,64 +19,65 @@ One thing We've learned from server-side programming is that ERRORS ARE GOOD!
 **DEPLOYMENT:** We've published this API on the popular deployment site Heroku (https://spotifoo.herokuapp.com/). You can interact with the current database using the routes listed on our site (all you need to do is append those route names after the sites url), to get feedback from our database and server. Using our routes you'll get objects back containing the information from our database specific to whichever route you visit. I'll list the routes below!
 
 ##ROUTES:##
-/users/
+
+### `/users/`
     ./users/ gets all users currently signed up in our database
 
-/users/id
+### `/users/id`
     ./users/id/ returns a particular user by their id
 
-/songs/
+### `/songs/`
     ./songs/ route is our smallest point of entry.  ./songs/ will get you an array object of all songs currently listed in Spotifoo
 
-/songs/id
+### `/songs/id`
     ./songs/id/ get a select song with it's mongodb generated id.
 
-/songs/top
+### `/songs/top`
     .most played songs appear first.
 
-/songs/alph
+### `/songs/alph`
     .songs appear in alphabetical order.        
 
-/artists/
+### `/artists/`
     ./artists/ route gets all artists in Spotifoo's database including albums and genre
 
-/artists/id
+### `/artists/id`
     ./artists/id/ specific artist by id.
 
-/artists/alph
+### `/artists/alph`
     .all artists sorted alphabetically.    
 
-/artists/topGenres
+### `/artists/topGenres`
     .top genres by number of artists.
 
-/albums/
+### `/albums/`
     ./albums/ shows all albums in our database, including song tracks and song length.
 
-/albums/id
+### `/albums/id`
     ./albums/id/ shows specific album with matching Spotifoo id.
 
-/albums/alph
+### `/albums/alph`
     .orders album list alphabetically.     
 
-/playlists/
+### `/playlists/`
     .the playlists route gets all playlists.
 
-/playlists/id
+### `/playlists/id`
     .the playlists id route get playlist by Id and to delete playlist.
 
-/playlists/id/following
+### `/playlists/id/following`
     .follow another user by their user id
 
-/playlists/top
+### `/playlists/top`
     .orders playlists by playCount, starting from most played to least played.
 
-/playlists/user
+### `/playlists/user`
     .orders playlist by users alphabetically.
 
-/plSongId/
+### `/plSongId/`
     .route allows for posting and deletion of playlist songs by their ID.
 
-/auth/
+### `/auth/`
     .our authentication route houses our /signup /signin and /verify routes which authenticate users.                         
 
 **AUTHORS:**
